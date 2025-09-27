@@ -1,0 +1,363 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n';
+import { GraduationCap, Award, Globe, Download } from 'lucide-astro';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// Import resume data based on language
+const resumeData = lang === 'es' 
+  ? await import('../../resume.json')
+  : await import('../../resume_en.json');
+
+const { basics, education, certificates, skills, languages } = resumeData.default;
+---
+
+<section class="about" id="about">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">{t('about.title')}</h2>
+      <p class="section-subtitle">{t('about.subtitle')}</p>
+    </div>
+
+    <div class="about-content">
+      <div class="about-main">
+        <div class="about-text">
+          <h3>{t('about.summary.title')}</h3>
+          <p class="summary">{basics.summary}</p>
+          
+          <div class="about-stats">
+            <div class="stat-item">
+              <GraduationCap size={24} />
+              <div>
+                <h4>{t('about.education')}</h4>
+                <p>{education[0].area}</p>
+              </div>
+            </div>
+            <div class="stat-item">
+              <Award size={24} />
+              <div>
+                <h4>{t('about.certifications')}</h4>
+                <p>{certificates.length} {t('about.certificates')}</p>
+              </div>
+            </div>
+            <div class="stat-item">
+              <Globe size={24} />
+              <div>
+                <h4>{t('about.languages')}</h4>
+                <p>{languages.map(l => l.language).join(', ')}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-actions">
+            <a href={`/resume_${lang}.pdf`} class="btn btn-primary" download>
+              <Download size={16} />
+              {t('about.downloadResume')}
+            </a>
+            <a href="#contact" class="btn btn-secondary">
+              {t('about.contact')}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-sidebar">
+        <!-- Skills Section -->
+        <div class="skills-section">
+          <h3>{t('about.skills.title')}</h3>
+          <div class="skills-grid">
+            {skills.map((skillCategory) => (
+              <div class="skill-category">
+                <h4 class="skill-category-title">{skillCategory.name}</h4>
+                <div class="skill-tags">
+                  {skillCategory.keywords.map((skill) => (
+                    <span class="skill-tag">{skill}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Education Section -->
+        <div class="education-section">
+          <h3>{t('about.education')}</h3>
+          <div class="education-list">
+            {education.map((edu) => (
+              <div class="education-item">
+                <div class="education-header">
+                  <h4>{edu.studyType}</h4>
+                  <span class="education-date">
+                    {new Date(edu.startDate).getFullYear()} - 
+                    {edu.endDate ? new Date(edu.endDate).getFullYear() : t('about.present')}
+                  </span>
+                </div>
+                <p class="education-area">{edu.area}</p>
+                <p class="education-institution">{edu.institution}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Languages Section -->
+        <div class="languages-section">
+          <h3>{t('about.languages')}</h3>
+          <div class="languages-list">
+            {languages.map((language) => (
+              <div class="language-item">
+                <span class="language-name">{language.language}</span>
+                <span class="language-level">{language.fluency}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    padding: 5rem 0;
+    background: var(--bg-primary);
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .about-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .about-main h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+  }
+
+  .summary {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+  }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-color);
+  }
+
+  .stat-item svg {
+    color: var(--accent-primary);
+    flex-shrink: 0;
+  }
+
+  .stat-item h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-item p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  .about-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .about-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .about-sidebar h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+  }
+
+  /* Skills Section */
+  .skills-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .skill-category {
+    background: var(--bg-secondary);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-color);
+  }
+
+  .skill-category-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .skill-tag {
+    padding: 0.4rem 0.8rem;
+    background: var(--accent-primary)20;
+    color: var(--accent-primary);
+    border-radius: 1rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid var(--accent-primary)30;
+  }
+
+  /* Education Section */
+  .education-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .education-item {
+    background: var(--bg-secondary);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-color);
+  }
+
+  .education-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .education-header h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .education-date {
+    font-size: 0.85rem;
+    color: var(--accent-primary);
+    font-weight: 500;
+  }
+
+  .education-area {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  .education-institution {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  /* Languages Section */
+  .languages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .language-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+  }
+
+  .language-name {
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .language-level {
+    font-size: 0.85rem;
+    color: var(--accent-primary);
+    font-weight: 500;
+  }
+
+  @media (max-width: 1024px) {
+    .about-content {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .about-stats {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .about {
+      padding: 3rem 0;
+    }
+
+    .section-header {
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+    }
+
+    .about-actions {
+      flex-direction: column;
+    }
+
+    .education-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>
