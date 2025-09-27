@@ -20,6 +20,15 @@ A modern, responsive portfolio website showcasing the skills, projects, and prof
 - **Package Manager:** Bun
 - **Styling:** CSS with gradient backgrounds
 - **Form Service:** Web3Forms for contact functionality
+- **Icon Libraries:** 
+  - lucide-astro (installed via Bun) - Primary icon library
+  - tabler-icons (installed via Bun) - Secondary icon library
+  - Additional free icon libraries can be added as needed via Bun:
+    - heroicons
+    - phosphor-icons
+    - feather-icons
+    - react-icons (if React components are needed)
+    - iconify (comprehensive icon framework)
 
 #### 3.2 Development Standards
 - All code must be written in TypeScript with strict type checking
