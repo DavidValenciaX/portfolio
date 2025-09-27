@@ -40,11 +40,16 @@ const { basics } = resumeData.default;
         </div>
 
         <div class="hero-actions">
-          <a href="#contact" class="btn btn-primary">
+          <a href={`mailto:${basics.email}`} class="btn btn-primary">
+            <Mail size={18} />
             {t('hero.contact')}
           </a>
-          <a href={`/resume_${lang}.pdf`} class="btn btn-secondary" download>
-            <Download size={16} />
+          <a 
+            href={lang === 'en' ? '/Oscar_David_Valencia_resume_en.pdf' : '/Oscar_David_Valencia_resume_es.pdf'} 
+            class="btn btn-secondary" 
+            download={`Oscar_David_Valencia_resume_${lang}.pdf`}
+          >
+            <Download size={18} />
             {t('hero.downloadResume')}
           </a>
         </div>

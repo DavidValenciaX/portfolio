@@ -1,6 +1,6 @@
 ---
 import { getLangFromUrl, useTranslations } from '../i18n';
-import { GraduationCap, Award, Globe, Download } from 'lucide-astro';
+import { GraduationCap, Award, Globe, Download, Mail } from 'lucide-astro';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -51,11 +51,16 @@ const { basics, education, certificates, skills, languages } = resumeData.defaul
           </div>
 
           <div class="about-actions">
-            <a href={`/resume_${lang}.pdf`} class="btn btn-primary" download>
-              <Download size={16} />
+            <a 
+              href={lang === 'en' ? '/Oscar_David_Valencia_resume_en.pdf' : '/Oscar_David_Valencia_resume_es.pdf'} 
+              class="btn btn-primary" 
+              download={`Oscar_David_Valencia_resume_${lang}.pdf`}
+            >
+              <Download size={18} />
               {t('about.downloadResume')}
             </a>
-            <a href="#contact" class="btn btn-secondary">
+            <a href={`mailto:${basics.email}`} class="btn btn-secondary">
+              <Mail size={18} />
               {t('about.contact')}
             </a>
           </div>
