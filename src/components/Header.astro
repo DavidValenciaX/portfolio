@@ -193,11 +193,11 @@ const t = useTranslations(lang);
     transition: all 0.3s ease;
   }
 
-  [data-theme="light"] .moon-icon {
+  :global([data-theme="light"]) .moon-icon {
     display: none;
   }
 
-  [data-theme="dark"] .sun-icon {
+  :global([data-theme="dark"]) .sun-icon {
     display: none;
   }
 
