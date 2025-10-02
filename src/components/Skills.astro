@@ -14,7 +14,7 @@ import {
   siGit,
   siGithub,
   siWordpress,
-  siWoocommerce,
+  siWoo,
 } from 'simple-icons';
 
 const lang = getLangFromUrl(Astro.url);
@@ -52,7 +52,7 @@ const SKILL_ICON_MAP: Record<string, IconData> = {
   'Git': siGit,
   'GitHub': siGithub,
   'WordPress': siWordpress,
-  'WooCommerce': siWoocommerce,
+  'WooCommerce': siWoo,
 };
 
 // Function to get icon data for a skill
@@ -150,6 +150,7 @@ const getSkillIcon = (skillName: string): IconData | null => {
     font-size: 1.1rem;
     font-weight: 600;
     color: var(--text-primary);
+    margin-bottom: 0.5rem;
   }
 
   .skill-tags {
