@@ -8,7 +8,7 @@ const t = useTranslations(lang);
 // Import resume data based on language
 const resumeData = lang === 'en' 
   ? await import('../../resume_en.json')
-  : await import('../../resume.json');
+  : await import('../../resume_es.json');
 
 const { basics } = resumeData.default;
 ---

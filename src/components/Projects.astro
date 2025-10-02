@@ -7,7 +7,7 @@ const t = useTranslations(lang);
 
 // Import resume data based on language
 const resumeData = lang === 'es' 
-  ? await import('../../resume.json')
+  ? await import('../../resume_es.json')
   : await import('../../resume_en.json');
 
 const { projects } = resumeData.default;
