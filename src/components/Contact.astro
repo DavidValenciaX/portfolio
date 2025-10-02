@@ -1,5 +1,5 @@
 ---
-import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-astro';
+import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Download } from 'lucide-astro';
 import { getLangFromUrl, useTranslations } from '../i18n';
 
 const lang = getLangFromUrl(Astro.url);
@@ -11,6 +11,11 @@ const resumeData = lang === 'en'
   : await import('../../resume_es.json');
 
 const { basics } = resumeData.default;
+
+// Resume PDF path based on language
+const RESUME_PDF_PATH = lang === 'en' 
+  ? '/Oscar_David_Valencia_resume_en.pdf'
+  : '/Oscar_David_Valencia_resume_es.pdf';
 ---
 
 <section id="contact" class="contact-section">
@@ -53,6 +58,17 @@ const { basics } = resumeData.default;
 
         <!-- Social Links -->
         <div class="social-links">
+          <!-- Download Resume Button -->
+          <a 
+            href={RESUME_PDF_PATH}
+            download
+            class="social-link download-resume-link"
+            title={t('contact.downloadResume')}
+          >
+            <Download size={16} />
+            <span>{t('contact.downloadResume')}</span>
+          </a>
+
           {basics.profiles.map((profile) => (
             <a 
               href={profile.url} 
@@ -256,6 +272,16 @@ const { basics } = resumeData.default;
     color: white;
     border-color: var(--accent-color);
     transform: translateY(-1px);
+  }
+
+  .download-resume-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .download-resume-link svg {
+    flex-shrink: 0;
   }
 
   .contact-form-container {
