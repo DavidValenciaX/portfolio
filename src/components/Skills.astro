@@ -10,6 +10,36 @@ const resumeData = lang === 'es'
   : await import('../../resume_en.json');
 
 const { skills } = resumeData.default;
+
+// Constants for skill icons mapping
+const SKILL_ICON_BASE_URL = 'https://go-skill-icons.vercel.app/api/icons';
+const ICON_SIZE = 48;
+
+// Mapping of skill names to skill-icons codes
+const SKILL_ICON_MAP: Record<string, string> = {
+  'HTML': 'html',
+  'CSS': 'css',
+  'JavaScript': 'js',
+  'Node.js': 'nodejs',
+  'Express': 'express',
+  'Swagger': 'swagger',
+  'PostgreSQL': 'postgresql',
+  'MongoDB': 'mongodb',
+  'Jest': 'jest',
+  'GitHub Actions': 'githubactions',
+  'Git': 'git',
+  'GitHub': 'github',
+  'Scrum': 'scrum',
+  'WordPress': 'wordpress',
+  'WooCommerce': 'woocommerce',
+};
+
+// Function to get icon URL for a skill
+const getSkillIconUrl = (skillName: string): string | null => {
+  const iconCode = SKILL_ICON_MAP[skillName];
+  if (!iconCode) return null;
+  return `${SKILL_ICON_BASE_URL}?i=${iconCode}`;
+};
 ---
 
 <section class="skills" id="skills">
@@ -24,9 +54,22 @@ const { skills } = resumeData.default;
           <div class="skill-category">
             <h4 class="skill-category-title">{skillCategory.name}</h4>
             <div class="skill-tags">
-              {skillCategory.keywords.map((skill) => (
-                <span class="skill-tag">{skill}</span>
-              ))}
+              {skillCategory.keywords.map((skill) => {
+                const iconUrl = getSkillIconUrl(skill);
+                return (
+                  <span class="skill-tag">
+                    {iconUrl && (
+                      <img 
+                        src={iconUrl} 
+                        alt={skill}
+                        class="skill-icon"
+                        loading="lazy"
+                      />
+                    )}
+                    <span class="skill-name">{skill}</span>
+                  </span>
+                );
+              })}
             </div>
           </div>
         ))}
@@ -97,6 +140,9 @@ const { skills } = resumeData.default;
   }
 
   .skill-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     padding: 0.4rem 0.8rem;
     background: var(--accent-primary)20;
     color: var(--accent-primary);
@@ -110,6 +156,16 @@ const { skills } = resumeData.default;
   .skill-tag:hover {
     background: var(--accent-primary)30;
     transform: scale(1.05);
+  }
+
+  .skill-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+  }
+
+  .skill-name {
+    line-height: 1;
   }
 
   @media (max-width: 768px) {
