@@ -1,6 +1,6 @@
 ---
 import { getLangFromUrl, useTranslations } from '../i18n';
-import { GraduationCap, Award, Globe, Download, Mail } from 'lucide-astro';
+import { GraduationCap, Globe, Download, Mail } from 'lucide-astro';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -35,13 +35,6 @@ const { basics, education, certificates, languages } = resumeData.default;
               </div>
             </div>
             <div class="stat-item">
-              <Award size={24} />
-              <div>
-                <h4>{t('about.certifications')}</h4>
-                <p>{certificates.length} {t('about.certificates')}</p>
-              </div>
-            </div>
-            <div class="stat-item">
               <Globe size={24} />
               <div>
                 <h4>{t('about.languages')}</h4>
@@ -54,53 +47,38 @@ const { basics, education, certificates, languages } = resumeData.default;
       </div>
 
       <div class="about-sidebar">
-        <!-- Education Section -->
-        <div class="education-section">
-          <h3>{t('about.education')}</h3>
-          <div class="education-list">
-            {education.map((edu) => (
-              <div class="education-item">
-                <div class="education-header">
-                  <h4>{edu.studyType}</h4>
-                  <span class="education-date">
-                    {new Date(edu.startDate).getFullYear()} - 
-                    {edu.endDate ? new Date(edu.endDate).getFullYear() : t('about.present')}
+        <!-- Certificates Section -->
+        <div class="certificates-section">
+          <h3>{t('about.certifications')}</h3>
+          <div class="certificates-list">
+            {certificates.map((cert) => (
+              <div class="certificate-item">
+                <div class="certificate-header">
+                  <h4>{cert.name}</h4>
+                  <span class="certificate-date">
+                    {new Date(cert.date).getFullYear()}
                   </span>
                 </div>
-                <p class="education-area">{edu.area}</p>
-                <p class="education-institution">{edu.institution}</p>
+                <p class="certificate-issuer">{cert.issuer}</p>
               </div>
             ))}
           </div>
         </div>
 
-        <!-- Languages Section -->
-        <div class="languages-section">
-          <h3>{t('about.languages')}</h3>
-          <div class="languages-list">
-            {languages.map((language) => (
-              <div class="language-item">
-                <span class="language-name">{language.language}</span>
-                <span class="language-level">{language.fluency}</span>
-              </div>
-            ))}
-          </div>
+        <div class="about-actions">
+          <a 
+            href={lang === 'en' ? '/Oscar_David_Valencia_resume_en.pdf' : '/Oscar_David_Valencia_resume_es.pdf'} 
+            class="btn btn-primary" 
+            download={`Oscar_David_Valencia_resume_${lang}.pdf`}
+          >
+            <Download size={18} />
+            {t('about.downloadResume')}
+          </a>
+          <a href={`mailto:${basics.email}`} class="btn btn-secondary">
+            <Mail size={18} />
+            {t('about.contact')}
+          </a>
         </div>
-
-          <div class="about-actions">
-            <a 
-              href={lang === 'en' ? '/Oscar_David_Valencia_resume_en.pdf' : '/Oscar_David_Valencia_resume_es.pdf'} 
-              class="btn btn-primary" 
-              download={`Oscar_David_Valencia_resume_${lang}.pdf`}
-            >
-              <Download size={18} />
-              {t('about.downloadResume')}
-            </a>
-            <a href={`mailto:${basics.email}`} class="btn btn-secondary">
-              <Mail size={18} />
-              {t('about.contact')}
-            </a>
-          </div>
 
       </div>
     </div>
@@ -206,21 +184,21 @@ const { basics, education, certificates, languages } = resumeData.default;
     margin-bottom: 1.5rem;
   }
 
-  /* Education Section */
-  .education-list {
+  /* Certificates Section */
+  .certificates-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
   }
 
-  .education-item {
+  .certificate-item {
     background: var(--bg-secondary);
     padding: 1.5rem;
     border-radius: 0.75rem;
     border: 1px solid var(--border-color);
   }
 
-  .education-header {
+  .certificate-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -229,56 +207,35 @@ const { basics, education, certificates, languages } = resumeData.default;
     gap: 0.5rem;
   }
 
-  .education-header h4 {
+  .certificate-header h4 {
     font-size: 1rem;
     font-weight: 600;
     color: var(--text-primary);
   }
 
-  .education-date {
+  .certificate-date {
     font-size: 0.85rem;
     color: var(--accent-primary);
     font-weight: 500;
   }
 
-  .education-area {
-    font-size: 0.95rem;
-    color: var(--text-primary);
-    margin-bottom: 0.25rem;
-  }
-
-  .education-institution {
-    font-size: 0.85rem;
+  .certificate-issuer {
+    font-size: 0.9rem;
     color: var(--text-secondary);
-    margin-bottom: 0;
+    margin-bottom: 0.75rem;
   }
 
-  /* Languages Section */
-  .languages-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-  }
-
-  .language-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 1.5rem;
-    background: var(--bg-secondary);
-    border-radius: 0.5rem;
-    border: 1px solid var(--border-color);
-  }
-
-  .language-name {
-    font-weight: 500;
-    color: var(--text-primary);
-  }
-
-  .language-level {
+  .certificate-link {
     font-size: 0.85rem;
     color: var(--accent-primary);
+    text-decoration: none;
     font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .certificate-link:hover {
+    color: var(--accent-secondary);
+    text-decoration: underline;
   }
 
   @media (max-width: 1024px) {
@@ -309,7 +266,7 @@ const { basics, education, certificates, languages } = resumeData.default;
       flex-direction: column;
     }
 
-    .education-header {
+    .certificate-header {
       flex-direction: column;
       align-items: flex-start;
     }
