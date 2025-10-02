@@ -132,7 +132,7 @@ const { basics, education, certificates, languages } = resumeData.default;
 
   .about-content {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr;
     gap: 4rem;
     align-items: start;
   }
@@ -206,8 +206,8 @@ const { basics, education, certificates, languages } = resumeData.default;
 
   /* Education Section */
   .education-list {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
   }
 
@@ -252,8 +252,8 @@ const { basics, education, certificates, languages } = resumeData.default;
 
   /* Languages Section */
   .languages-list {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
   }
 
