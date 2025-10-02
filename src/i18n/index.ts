@@ -51,8 +51,7 @@ export const ui = {
     'contact.form.messagePlaceholder': 'Escribe tu mensaje aquí...',
     'contact.form.send': 'Enviar Mensaje',
     'contact.form.success': '¡Mensaje enviado exitosamente! Te responderé pronto.',
-    'contact.form.error': 'Error al enviar el mensaje. Por favor, inténtalo de nuevo.',
-    'footer.rights': 'Todos los derechos reservados.',
+    'contact.form.error': 'Error al enviar el mensaje. Por favor, inténtalo de nuevo.'
   },
   en: {
     'nav.home': 'Home',
@@ -99,8 +98,7 @@ export const ui = {
     'contact.form.messagePlaceholder': 'Write your message here...',
     'contact.form.send': 'Send Message',
     'contact.form.success': 'Message sent successfully! I\'ll get back to you soon.',
-    'contact.form.error': 'Error sending message. Please try again.',
-    'footer.rights': 'All rights reserved.',
+    'contact.form.error': 'Error sending message. Please try again.'
   },
 } as const;
 
