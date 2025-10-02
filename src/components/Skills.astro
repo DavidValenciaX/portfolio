@@ -1,5 +1,21 @@
 ---
 import { getLangFromUrl, useTranslations } from '../i18n';
+import {
+  siHtml5,
+  siCss,
+  siJavascript,
+  siNodedotjs,
+  siExpress,
+  siSwagger,
+  siPostgresql,
+  siMongodb,
+  siJest,
+  siGithubactions,
+  siGit,
+  siGithub,
+  siWordpress,
+  siWoocommerce,
+} from 'simple-icons';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -11,34 +27,37 @@ const resumeData = lang === 'es'
 
 const { skills } = resumeData.default;
 
-// Constants for skill icons mapping
-const SKILL_ICON_BASE_URL = 'https://go-skill-icons.vercel.app/api/icons';
-const ICON_SIZE = 48;
+// Constants for skill icon configuration
+const ICON_SIZE = 20;
 
-// Mapping of skill names to skill-icons codes
-const SKILL_ICON_MAP: Record<string, string> = {
-  'HTML': 'html',
-  'CSS': 'css',
-  'JavaScript': 'js',
-  'Node.js': 'nodejs',
-  'Express': 'express',
-  'Swagger': 'swagger',
-  'PostgreSQL': 'postgresql',
-  'MongoDB': 'mongodb',
-  'Jest': 'jest',
-  'GitHub Actions': 'githubactions',
-  'Git': 'git',
-  'GitHub': 'github',
-  'Scrum': 'scrum',
-  'WordPress': 'wordpress',
-  'WooCommerce': 'woocommerce',
+// Type for icon data
+interface IconData {
+  svg: string;
+  hex: string;
+  title: string;
+}
+
+// Mapping of skill names to simple-icons objects
+const SKILL_ICON_MAP: Record<string, IconData> = {
+  'HTML': siHtml5,
+  'CSS': siCss,
+  'JavaScript': siJavascript,
+  'Node.js': siNodedotjs,
+  'Express': siExpress,
+  'Swagger': siSwagger,
+  'PostgreSQL': siPostgresql,
+  'MongoDB': siMongodb,
+  'Jest': siJest,
+  'GitHub Actions': siGithubactions,
+  'Git': siGit,
+  'GitHub': siGithub,
+  'WordPress': siWordpress,
+  'WooCommerce': siWoocommerce,
 };
 
-// Function to get icon URL for a skill
-const getSkillIconUrl = (skillName: string): string | null => {
-  const iconCode = SKILL_ICON_MAP[skillName];
-  if (!iconCode) return null;
-  return `${SKILL_ICON_BASE_URL}?i=${iconCode}`;
+// Function to get icon data for a skill
+const getSkillIcon = (skillName: string): IconData | null => {
+  return SKILL_ICON_MAP[skillName] || null;
 };
 ---
 
@@ -55,15 +74,15 @@ const getSkillIconUrl = (skillName: string): string | null => {
             <h4 class="skill-category-title">{skillCategory.name}</h4>
             <div class="skill-tags">
               {skillCategory.keywords.map((skill) => {
-                const iconUrl = getSkillIconUrl(skill);
+                const iconData = getSkillIcon(skill);
                 return (
                   <span class="skill-tag">
-                    {iconUrl && (
-                      <img 
-                        src={iconUrl} 
-                        alt={skill}
+                    {iconData && (
+                      <span 
                         class="skill-icon"
-                        loading="lazy"
+                        style={`color: #${iconData.hex};`}
+                        set:html={iconData.svg}
+                        aria-label={iconData.title}
                       />
                     )}
                     <span class="skill-name">{skill}</span>
@@ -159,9 +178,17 @@ const getSkillIconUrl = (skillName: string): string | null => {
   }
 
   .skill-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 20px;
     height: 20px;
-    object-fit: contain;
+  }
+
+  .skill-icon :global(svg) {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
   }
 
   .skill-name {
