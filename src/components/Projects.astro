@@ -71,15 +71,17 @@ function getProjectThumbnail(projectName: string): string | null {
                     <ExternalLink size={18} />
                   </a>
                 )}
-                <a 
-                  href="https://github.com/DavidValenciaX" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  class="project-link"
-                  aria-label={`${t('projects.viewCode')} ${project.name}`}
-                >
-                  <Github size={18} />
-                </a>
+                {project.repository && (
+                  <a 
+                    href={project.repository} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="project-link"
+                    aria-label={`${t('projects.viewCode')} ${project.name}`}
+                  >
+                    <Github size={18} />
+                  </a>
+                )}
               </div>
             </div>
 
@@ -123,15 +125,17 @@ function getProjectThumbnail(projectName: string): string | null {
                   {t('projects.viewProject')}
                 </a>
               )}
-              <a 
-                href="https://github.com/DavidValenciaX" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                class="btn btn-secondary btn-sm"
-              >
-                <Github size={14} />
-                {t('projects.viewCode')}
-              </a>
+              {project.repository && (
+                <a 
+                  href={project.repository} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  class="btn btn-secondary btn-sm"
+                >
+                  <Github size={14} />
+                  {t('projects.viewCode')}
+                </a>
+              )}
             </div>
           </div>
         </article>

@@ -96,64 +96,42 @@
     {
       "name": "Frontend",
       "level": "",
-      "keywords": [
-        "HTML",
-        "CSS",
-        "JavaScript"
-      ]
+      "keywords": ["HTML", "CSS", "JavaScript"]
     },
     {
       "name": "Backend",
       "level": "",
-      "keywords": [
-        "Node.js",
-        "Express"
-      ]
+      "keywords": ["Node.js", "Express"]
     },
     {
       "name": "Documentación",
       "level": "",
-      "keywords": [
-        "Swagger"
-      ]
+      "keywords": ["Swagger"]
     },
     {
       "name": "Bases de Datos",
       "level": "",
-      "keywords": [
-        "PostgreSQL",
-        "MongoDB"
-      ]
+      "keywords": ["PostgreSQL", "MongoDB"]
     },
     {
       "name": "Testing",
       "level": "",
-      "keywords": [
-        "Jest"
-      ]
+      "keywords": ["Jest"]
     },
     {
       "name": "CI/CD",
       "level": "",
-      "keywords": [
-        "GitHub Actions"
-      ]
+      "keywords": ["GitHub Actions"]
     },
     {
       "name": "Control de Versiones",
       "level": "",
-      "keywords": [
-        "Git",
-        "GitHub"
-      ]
+      "keywords": ["Git", "GitHub"]
     },
     {
       "name": "E-commerce & CMS",
       "level": "",
-      "keywords": [
-        "WordPress",
-        "WooCommerce"
-      ]
+      "keywords": ["WordPress", "WooCommerce"]
     }
   ],
   "languages": [
@@ -187,9 +165,8 @@
       "startDate": "2023-07",
       "endDate": "2025-07",
       "url": "https://horarios-application.netlify.app/",
-      "roles": [
-        "Desarrollador Full-Stack"
-      ],
+      "repository": "https://github.com/DavidValenciaX/horarios_app",
+      "roles": ["Desarrollador Full-Stack"],
       "entity": "Proyecto Personal",
       "type": "application"
     },
@@ -212,9 +189,8 @@
       "startDate": "2024-08",
       "endDate": "2025-07",
       "url": "https://print-nelsy.vercel.app/",
-      "roles": [
-        "Desarrollador Frontend"
-      ],
+      "repository": "https://github.com/DavidValenciaX/printNelsy",
+      "roles": ["Desarrollador Frontend"],
       "entity": "Proyecto Personal/Familiar",
       "type": "application"
     },
@@ -236,9 +212,7 @@
       "startDate": "2025-07",
       "endDate": "2025-08",
       "url": "https://distrimarcassjg.com/",
-      "roles": [
-        "Desarrollador Web Freelance"
-      ],
+      "roles": ["Desarrollador Web Freelance"],
       "entity": "Proyecto Comercial",
       "type": "website"
     }
