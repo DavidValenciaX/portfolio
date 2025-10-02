@@ -1,0 +1,136 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// Import resume data based on language
+const resumeData = lang === 'es' 
+  ? await import('../../resume_es.json')
+  : await import('../../resume_en.json');
+
+const { skills } = resumeData.default;
+---
+
+<section class="skills" id="skills">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">{t('about.skills.title')}</h2>
+      <p class="section-subtitle">{t('about.subtitle')}</p>
+    </div>
+
+    <div class="skills-content">
+      <div class="skills-grid">
+        {skills.map((skillCategory) => (
+          <div class="skill-category">
+            <h4 class="skill-category-title">{skillCategory.name}</h4>
+            <div class="skill-tags">
+              {skillCategory.keywords.map((skill) => (
+                <span class="skill-tag">{skill}</span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .skills {
+    padding: 5rem 0;
+    background: var(--bg-primary);
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .skills-content {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .skill-category {
+    background: var(--bg-secondary);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .skill-category:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .skill-category-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .skill-tag {
+    padding: 0.4rem 0.8rem;
+    background: var(--accent-primary)20;
+    color: var(--accent-primary);
+    border-radius: 1rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid var(--accent-primary)30;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+
+  .skill-tag:hover {
+    background: var(--accent-primary)30;
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+    .skills {
+      padding: 3rem 0;
+    }
+
+    .section-header {
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+    }
+
+    .skills-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+

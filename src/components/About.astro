@@ -10,7 +10,7 @@ const resumeData = lang === 'es'
   ? await import('../../resume_es.json')
   : await import('../../resume_en.json');
 
-const { basics, education, certificates, skills, languages } = resumeData.default;
+const { basics, education, certificates, languages } = resumeData.default;
 ---
 
 <section class="about" id="about">
@@ -68,23 +68,6 @@ const { basics, education, certificates, skills, languages } = resumeData.defaul
       </div>
 
       <div class="about-sidebar">
-        <!-- Skills Section -->
-        <div class="skills-section">
-          <h3>{t('about.skills.title')}</h3>
-          <div class="skills-grid">
-            {skills.map((skillCategory) => (
-              <div class="skill-category">
-                <h4 class="skill-category-title">{skillCategory.name}</h4>
-                <div class="skill-tags">
-                  {skillCategory.keywords.map((skill) => (
-                    <span class="skill-tag">{skill}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
         <!-- Education Section -->
         <div class="education-section">
           <h3>{t('about.education')}</h3>
@@ -219,43 +202,6 @@ const { basics, education, certificates, skills, languages } = resumeData.defaul
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 1.5rem;
-  }
-
-  /* Skills Section */
-  .skills-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .skill-category {
-    background: var(--bg-secondary);
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-    border: 1px solid var(--border-color);
-  }
-
-  .skill-category-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
-  }
-
-  .skill-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .skill-tag {
-    padding: 0.4rem 0.8rem;
-    background: var(--accent-primary)20;
-    color: var(--accent-primary);
-    border-radius: 1rem;
-    font-size: 0.85rem;
-    font-weight: 500;
-    border: 1px solid var(--accent-primary)30;
   }
 
   /* Education Section */
