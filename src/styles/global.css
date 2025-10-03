@@ -34,6 +34,16 @@ body {
   --border-color: rgba(0, 0, 0, 0.1);
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.15);
+  
+  /* Gradient Colors - Green */
+  --green-gradient-start: #065f46; /* emerald-800 */
+  --green-gradient-mid: #10b981;   /* emerald-500 */
+  --green-gradient-end: #34d399;   /* emerald-400 */
+  
+  /* Gradient Colors - Blue */
+  --download-gradient-start: #1e3a8a; /* blue-900 */
+  --download-gradient-mid: #2563eb;   /* blue-600 */
+  --download-gradient-end: #3b82f6;   /* blue-500 */
 }
 
 [data-theme="dark"] {
