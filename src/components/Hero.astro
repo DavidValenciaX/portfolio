@@ -1,9 +1,10 @@
 ---
 import { getLangFromUrl, useTranslations } from '../i18n';
 import { Download, MapPin, Mail, Phone } from 'lucide-astro';
+import type { Basics } from '../types/resume';
 
 interface Props {
-  basics: any;
+  basics: Basics;
 }
 
 const { basics } = Astro.props;
@@ -53,7 +54,7 @@ const t = useTranslations(lang);
         </div>
 
         <div class="hero-social">
-          {basics.profiles.map((profile: any) => (
+          {basics.profiles.map((profile) => (
             <a 
               href={profile.url} 
               target="_blank" 

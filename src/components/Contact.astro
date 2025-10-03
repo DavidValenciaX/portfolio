@@ -1,9 +1,10 @@
 ---
 import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Download } from 'lucide-astro';
 import { getLangFromUrl, useTranslations } from '../i18n';
+import type { Basics, Profile } from '../types/resume';
 
 interface Props {
-  basics: any;
+  basics: Basics;
 }
 
 const { basics } = Astro.props;
@@ -70,7 +71,7 @@ const WEB3FORMS_ACCESS_KEY = import.meta.env.WEB3FORMSACCESSKEY || '';
             <span>{t('contact.downloadResume')}</span>
           </a>
 
-          {basics.profiles.map((profile: any) => (
+          {basics.profiles.map((profile) => (
             <a 
               href={profile.url} 
               target="_blank" 

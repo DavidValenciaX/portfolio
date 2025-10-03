@@ -6,6 +6,7 @@ import Skills from '../components/Skills.astro';
 import Projects from '../components/Projects.astro';
 import Contact from '../components/Contact.astro';
 import { useTranslations, languages, defaultLang } from '../i18n';
+import type { Resume } from '../types/resume';
 
 // Generate static paths for both languages
 export async function getStaticPaths() {
@@ -20,7 +21,7 @@ const lang = (urlLang && urlLang in languages ? urlLang : defaultLang) as keyof 
 const t = useTranslations(lang);
 
 // Centralized resume data import (SSR/HMR optimization)
-const resumeData = lang === 'es' 
+const resumeData: { default: Resume } = lang === 'es' 
   ? await import('../../resume_es.json')
   : await import('../../resume_en.json');
 

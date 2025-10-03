@@ -1,5 +1,6 @@
 ---
 import { getLangFromUrl, useTranslations } from '../i18n';
+import type { Skill } from '../types/resume';
 import {
   siHtml5,
   siCss,
@@ -18,7 +19,7 @@ import {
 } from 'simple-icons';
 
 interface Props {
-  skills: any[];
+  skills: Skill[];
 }
 
 const { skills } = Astro.props;
@@ -71,7 +72,7 @@ const getSkillIcon = (skillName: string): IconData | null => {
           <div class="skill-category">
             <h3 class="skill-category-title">{skillCategory.name}</h3>
             <div class="skill-tags">
-              {skillCategory.keywords.map((skill: string) => {
+              {skillCategory.keywords.map((skill) => {
                 const iconData = getSkillIcon(skill);
                 return (
                   <span class="skill-tag">

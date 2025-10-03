@@ -1,12 +1,13 @@
 ---
 import { getLangFromUrl, useTranslations } from '../i18n';
 import { GraduationCap, Globe } from 'lucide-astro';
+import type { Basics, Education, Certificate, Language } from '../types/resume';
 
 interface Props {
-  basics: any;
-  education: any[];
-  certificates: any[];
-  languages: any[];
+  basics: Basics;
+  education: Education[];
+  certificates: Certificate[];
+  languages: Language[];
 }
 
 const { basics, education, certificates, languages } = Astro.props;

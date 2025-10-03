@@ -1,6 +1,7 @@
 ---
 import { getLangFromUrl, useTranslations } from '../i18n';
 import { ExternalLink, Github, Calendar, Tag } from 'lucide-astro';
+import type { Project } from '../types/resume';
 
 // Import images
 import horariosAppThumbnail from '../assets/images/horarios_app_thumbnail.webp';
@@ -8,7 +9,7 @@ import printNelsyThumbnail from '../assets/images/print_nelsy_thumbnail.webp';
 import distrimarcassjgThumbnail from '../assets/images/distrimarcassjg_thumbnail.webp';
 
 interface Props {
-  projects: any[];
+  projects: Project[];
 }
 
 const { projects } = Astro.props;
@@ -94,7 +95,7 @@ function getProjectThumbnail(projectName: string): ImageMetadata | null {
             <div class="project-highlights">
               <h4>{t('projects.highlights')}</h4>
               <ul class="highlights-list">
-                {project.highlights.map((highlight: string) => (
+                {project.highlights.map((highlight) => (
                   <li>{highlight}</li>
                 ))}
               </ul>
@@ -103,7 +104,7 @@ function getProjectThumbnail(projectName: string): ImageMetadata | null {
             <div class="project-technologies">
               <h4>{t('projects.technologies')}</h4>
               <div class="tech-tags">
-                {project.keywords.map((tech: string) => (
+                {project.keywords.map((tech) => (
                   <span class="tech-tag">{tech}</span>
                 ))}
               </div>
