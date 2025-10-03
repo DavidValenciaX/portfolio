@@ -16,6 +16,9 @@ const { basics } = resumeData.default;
 const RESUME_PDF_PATH = lang === 'en' 
   ? '/Oscar_David_Valencia_resume_en.pdf'
   : '/Oscar_David_Valencia_resume_es.pdf';
+
+// Web3Forms access key from environment variable
+const WEB3FORMS_ACCESS_KEY = import.meta.env.WEB3FORMSACCESSKEY || '';
 ---
 
 <section id="contact" class="contact-section">
@@ -115,7 +118,7 @@ const RESUME_PDF_PATH = lang === 'en'
             <input 
               type="text" 
               id="subject" 
-              name="subject" 
+              name="user_subject" 
               required 
               placeholder={t('contact.form.subjectPlaceholder')}
             />
@@ -135,8 +138,8 @@ const RESUME_PDF_PATH = lang === 'en'
           </div>
 
           <!-- Hidden fields for Web3Forms -->
-          <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY">
-          <input type="hidden" name="subject" value="New Contact Form Submission from Portfolio">
+          <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY}>
+          <input type="hidden" name="subject" value={`Portfolio Contact Form - ${lang === 'en' ? 'New Message' : 'Nuevo Mensaje'}`}>
           <input type="hidden" name="from_name" value="Portfolio Contact Form">
 
           <button type="submit" class="submit-btn" id="submitBtn">
@@ -508,7 +511,7 @@ const RESUME_PDF_PATH = lang === 'en'
     // Real-time validation
     const nameField = document.getElementById('name') as HTMLInputElement;
     const emailField = document.getElementById('email') as HTMLInputElement;
-    const subjectField = document.getElementById('subject') as HTMLInputElement;
+    const subjectField = document.querySelector('input[name="user_subject"]') as HTMLInputElement;
     const messageField = document.getElementById('message') as HTMLTextAreaElement;
 
     const nameError = document.getElementById('nameError') as HTMLElement;
