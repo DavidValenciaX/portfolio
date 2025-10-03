@@ -285,7 +285,7 @@ const RESUME_PDF_PATH = lang === 'en'
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background: linear-gradient(135deg, var(--download-gradient-start), var(--download-gradient-mid), var(--download-gradient-end));
+    background: linear-gradient(135deg, var(--download-gradient-end), var(--download-gradient-mid), var(--download-gradient-start));
     color: #ffffff;
     border: 0;
     transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
@@ -297,11 +297,8 @@ const RESUME_PDF_PATH = lang === 'en'
 
   .download-resume-link:hover {
     /* Switch to green gradient on hover */
-    background: linear-gradient(135deg, var(--green-gradient-start), var(--green-gradient-mid), var(--green-gradient-end));
+    background: linear-gradient(135deg, var(--green-gradient-end), var(--green-gradient-mid), var(--green-gradient-start));
     color: white;
-    filter: brightness(1.05);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-hover);
   }
 
   .download-resume-link:focus-visible {
