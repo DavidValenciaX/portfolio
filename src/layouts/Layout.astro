@@ -1,6 +1,7 @@
 ---
 import { getLangFromUrl, useTranslations } from '../i18n';
 import Header from '../components/Header.astro';
+import '../styles/global.css';
 
 export interface Props {
   title: string;
@@ -38,9 +39,6 @@ const t = useTranslations(lang);
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content="https://s.gravatar.com/avatar/1fe920b6e79b5881c1d20fbc0e021f67?s=256" />
-    
-    <!-- Global Styles -->
-    <link rel="stylesheet" href="/src/styles/global.css" />
   </head>
   <body>
     <Header />

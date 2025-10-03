@@ -2,6 +2,11 @@
 import { getLangFromUrl, useTranslations } from '../i18n';
 import { ExternalLink, Github, Calendar, Tag } from 'lucide-astro';
 
+// Import images
+import horariosAppThumbnail from '../assets/images/horarios_app_thumbnail.webp';
+import printNelsyThumbnail from '../assets/images/print_nelsy_thumbnail.webp';
+import distrimarcassjgThumbnail from '../assets/images/distrimarcassjg_thumbnail.webp';
+
 interface Props {
   projects: any[];
 }
@@ -11,14 +16,14 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 // Thumbnail mapping for projects
-const PROJECT_THUMBNAILS = {
-  'horarios_app': '/src/assets/images/horarios_app_thumbnail.webp',
-  'printNelsy': '/src/assets/images/print_nelsy_thumbnail.webp',
-  'Distri Marcas SJG': '/src/assets/images/distrimarcassjg_thumbnail.webp'
+const PROJECT_THUMBNAILS: Record<string, ImageMetadata> = {
+  'horarios_app': horariosAppThumbnail,
+  'printNelsy': printNelsyThumbnail,
+  'Distri Marcas SJG': distrimarcassjgThumbnail
 };
 
 // Function to get thumbnail for a project
-function getProjectThumbnail(projectName: string): string | null {
+function getProjectThumbnail(projectName: string): ImageMetadata | null {
   for (const [key, thumbnail] of Object.entries(PROJECT_THUMBNAILS)) {
     if (projectName.toLowerCase().includes(key.toLowerCase())) {
       return thumbnail;
@@ -42,7 +47,7 @@ function getProjectThumbnail(projectName: string): string | null {
             {thumbnail && (
               <div class="project-thumbnail">
                 <img 
-                  src={thumbnail} 
+                  src={thumbnail.src} 
                   alt={`${project.name} thumbnail`}
                   loading="lazy"
                   class="thumbnail-image"
