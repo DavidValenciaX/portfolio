@@ -56,6 +56,13 @@ const t = useTranslations(lang);
         </div>
       </div>
     </footer>
+    
+    <script>
+      import { restoreScrollPosition } from '../scripts/language-persistence';
+      
+      // Restore scroll position after language switch
+      restoreScrollPosition();
+    </script>
   </body>
 </html>
 

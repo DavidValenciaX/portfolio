@@ -391,6 +391,7 @@ const t = useTranslations(lang);
 
 <script>
   import { initTheme, toggleTheme, watchSystemTheme } from '../scripts/theme';
+  import { setupLanguageSwitchListeners } from '../scripts/language-persistence';
 
   // Initialize theme
   initTheme();
@@ -413,6 +414,9 @@ const t = useTranslations(lang);
   document.addEventListener('click', () => {
     langDropdown?.classList.remove('active');
   });
+
+  // Setup language switch to preserve scroll position
+  setupLanguageSwitchListeners();
 
   // Mobile navigation toggle
   const navToggle = document.getElementById('nav-toggle');
