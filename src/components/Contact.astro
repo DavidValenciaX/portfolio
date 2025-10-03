@@ -139,7 +139,7 @@ const WEB3FORMS_ACCESS_KEY = import.meta.env.WEB3FORMSACCESSKEY || '';
 
           <!-- Hidden fields for Web3Forms -->
           <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY}>
-          <input type="hidden" name="subject" value={`Portfolio Contact Form - ${lang === 'en' ? 'New Message' : 'Nuevo Mensaje'}`}>
+          <input type="hidden" name="subject" id="hiddenSubject" data-prefix={lang === 'en' ? 'New message from the portfolio' : 'Nuevo mensaje del portafolio'} value="">
           <input type="hidden" name="from_name" value="Portfolio Contact Form">
 
           <button type="submit" class="submit-btn" id="submitBtn">
@@ -543,6 +543,14 @@ const WEB3FORMS_ACCESS_KEY = import.meta.env.WEB3FORMSACCESSKEY || '';
       submitBtn.innerHTML = '<svg class="animate-spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg><span>Sending...</span>';
 
       try {
+        // Build subject as: "<prefix>: <user subject>"
+        const hiddenSubject = document.getElementById('hiddenSubject') as HTMLInputElement;
+        const prefix = hiddenSubject?.dataset?.prefix || 'New message from the portfolio';
+        const userSubjectValue = subjectField.value.trim();
+        if (hiddenSubject) {
+          hiddenSubject.value = `${prefix}: ${userSubjectValue}`;
+        }
+
         const formData = new FormData(form);
         
         // Note: Replace with your actual Web3Forms access key
