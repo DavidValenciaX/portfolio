@@ -9,12 +9,24 @@ import { getLangFromUrl, useTranslations } from '../i18n';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+// Centralized resume data import (SSR/HMR optimization)
+const resumeData = lang === 'es' 
+  ? await import('../../resume_es.json')
+  : await import('../../resume_en.json');
+
+const { basics, education, certificates, languages, skills, projects } = resumeData.default;
 ---
 
 <Layout title={`${t('nav.home')} - Oscar David Valencia`}>
-  <Hero />
-  <About />
-  <Projects />
-  <Skills />
-  <Contact />
+  <Hero basics={basics} />
+  <About 
+    basics={basics} 
+    education={education} 
+    certificates={certificates} 
+    languages={languages} 
+  />
+  <Projects projects={projects} />
+  <Skills skills={skills} />
+  <Contact basics={basics} />
 </Layout>

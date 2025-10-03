@@ -39,8 +39,8 @@ const t = useTranslations(lang);
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content="https://s.gravatar.com/avatar/1fe920b6e79b5881c1d20fbc0e021f67?s=256" />
     
-    <!-- Preload Critical Resources -->
-    <link rel="preload" href="/src/styles/global.css" as="style" />
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="/src/styles/global.css" />
   </head>
   <body>
     <Header />
@@ -62,8 +62,6 @@ const t = useTranslations(lang);
 </html>
 
 <style is:global>
-  @import '../styles/global.css';
-
   main {
     margin-top: 70px;
   }

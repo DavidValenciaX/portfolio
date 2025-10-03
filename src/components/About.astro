@@ -2,15 +2,16 @@
 import { getLangFromUrl, useTranslations } from '../i18n';
 import { GraduationCap, Globe } from 'lucide-astro';
 
+interface Props {
+  basics: any;
+  education: any[];
+  certificates: any[];
+  languages: any[];
+}
+
+const { basics, education, certificates, languages } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-
-// Import resume data based on language
-const resumeData = lang === 'es' 
-  ? await import('../../resume_es.json')
-  : await import('../../resume_en.json');
-
-const { basics, education, certificates, languages } = resumeData.default;
 ---
 
 <section class="about" id="about">

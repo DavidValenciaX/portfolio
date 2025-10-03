@@ -17,15 +17,13 @@ import {
   siWoo,
 } from 'simple-icons';
 
+interface Props {
+  skills: any[];
+}
+
+const { skills } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-
-// Import resume data based on language
-const resumeData = lang === 'es' 
-  ? await import('../../resume_es.json')
-  : await import('../../resume_en.json');
-
-const { skills } = resumeData.default;
 
 // Constants for skill icon configuration
 const ICON_SIZE = 20;
@@ -73,7 +71,7 @@ const getSkillIcon = (skillName: string): IconData | null => {
           <div class="skill-category">
             <h4 class="skill-category-title">{skillCategory.name}</h4>
             <div class="skill-tags">
-              {skillCategory.keywords.map((skill) => {
+              {skillCategory.keywords.map((skill: string) => {
                 const iconData = getSkillIcon(skill);
                 return (
                   <span class="skill-tag">

@@ -2,15 +2,13 @@
 import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Download } from 'lucide-astro';
 import { getLangFromUrl, useTranslations } from '../i18n';
 
+interface Props {
+  basics: any;
+}
+
+const { basics } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-
-// Import resume data based on language
-const resumeData = lang === 'en' 
-  ? await import('../../resume_en.json')
-  : await import('../../resume_es.json');
-
-const { basics } = resumeData.default;
 
 // Resume PDF path based on language
 const RESUME_PDF_PATH = lang === 'en' 
@@ -72,7 +70,7 @@ const WEB3FORMS_ACCESS_KEY = import.meta.env.WEB3FORMSACCESSKEY || '';
             <span>{t('contact.downloadResume')}</span>
           </a>
 
-          {basics.profiles.map((profile) => (
+          {basics.profiles.map((profile: any) => (
             <a 
               href={profile.url} 
               target="_blank" 
