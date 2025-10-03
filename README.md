@@ -9,6 +9,7 @@ Sitio web personal de portfolio profesional que muestra mis habilidades, proyect
 ## 🌟 Características
 
 - **🌐 Bilingüe**: Soporte completo para español e inglés con detección automática del idioma del navegador
+- **🔄 Persistencia de Navegación**: Mantiene la posición de scroll y sección al cambiar de idioma
 - **🎨 Temas Dinámicos**: Modo claro y oscuro con detección de preferencias del sistema y persistencia de selección
 - **📱 Diseño Responsive**: Optimizado para dispositivos móviles, tablets y escritorio
 - **⚡ Alto Rendimiento**: Construido con Astro para una carga ultra-rápida
@@ -22,11 +23,11 @@ Sitio web personal de portfolio profesional que muestra mis habilidades, proyect
 - **Framework**: [Astro](https://astro.build) - Framework moderno para sitios estáticos
 - **Lenguaje**: TypeScript (tipado estricto, sin uso de `any`)
 - **Package Manager**: [Bun](https://bun.sh) - Runtime y gestor de paquetes ultra-rápido
-- **Estilos**: CSS3 con gradientes personalizados
+- **Estilos**: CSS3 con gradientes personalizados y variables CSS para temas
 - **Servicios**: Web3Forms para funcionalidad de contacto
 - **Iconos**:
   - [lucide-astro](https://lucide.dev/) - Biblioteca principal de iconos
-  - [tabler-icons](https://tabler-icons.io/) - Biblioteca secundaria de iconos
+  - [simple-icons](https://simpleicons.org/) - Iconos de marcas y tecnologías
 
 ## 📂 Estructura del Proyecto
 
@@ -55,7 +56,10 @@ portfolio/
 │   ├── pages/
 │   │   └── [...lang].astro         # Página principal con rutas dinámicas
 │   ├── scripts/
+│   │   ├── language-persistence.ts # Persistencia de scroll al cambiar idioma
 │   │   └── theme.ts                # Lógica del sistema de temas
+│   ├── types/
+│   │   └── resume.ts               # Tipos TypeScript para el currículum
 │   └── styles/
 │       └── global.css              # Estilos globales
 ├── resume_en.json                   # Datos del currículum en inglés
@@ -113,16 +117,29 @@ El sitio soporta dos idiomas:
 - **Español** (por defecto): `/` o `/es`
 - **Inglés**: `/en`
 
+### Características de i18n
+
+- **Detección automática**: Detecta el idioma preferido del navegador
+- **Persistencia de navegación**: Al cambiar de idioma, mantiene la posición de scroll y la sección activa
+- **Traducciones completas**: Todos los textos de la interfaz traducidos
+- **Contenido localizado**: CVs y datos del currículum específicos para cada idioma
+
 Los archivos de traducción se encuentran en `src/i18n/index.ts` y los datos del currículum en `resume_es.json` y `resume_en.json`.
 
 ## 🎨 Sistema de Temas
 
-El sitio incluye dos temas:
+El sitio incluye dos temas con transiciones suaves:
 
 - **Modo Claro**: Gradientes claros, apariencia profesional y optimista
 - **Modo Oscuro**: Gradientes oscuros, apariencia moderna y elegante
 
-La preferencia del tema se guarda en `localStorage` y se sincroniza automáticamente con las preferencias del sistema.
+### Características del sistema de temas
+
+- **Detección automática**: Lee las preferencias del sistema operativo
+- **Persistencia local**: Guarda la selección del usuario en `localStorage`
+- **Sincronización dinámica**: Responde a cambios en las preferencias del sistema
+- **Variables CSS**: Usa variables CSS personalizadas para una gestión eficiente de colores
+- **Transiciones suaves**: Cambios de tema con animaciones elegantes
 
 ## 📊 Rendimiento
 
@@ -137,9 +154,11 @@ El sitio está optimizado para obtener excelentes puntuaciones en Lighthouse:
 
 El proyecto utiliza TypeScript con configuración estricta:
 
-- Sin uso de tipo `any`
-- Tipado explícito requerido
-- Verificaciones estrictas habilitadas
+- **Sin uso de tipo `any`**: Tipado explícito en todo el código
+- **Modo estricto**: Todas las verificaciones estrictas habilitadas
+- **Tipos personalizados**: Definiciones de tipos para currículum y dependencias
+- **Type safety**: Garantiza la seguridad de tipos en tiempo de compilación
+- **Intellisense mejorado**: Autocompletado completo en el IDE
 
 ## 📝 Datos del Currículum
 
@@ -153,6 +172,28 @@ Los datos del portfolio se gestionan mediante archivos JSON estructurados (`resu
 - Habilidades técnicas
 - Proyectos destacados
 - Idiomas
+
+## ✨ Características Técnicas Adicionales
+
+### Persistencia de Estado
+
+- **SessionStorage para navegación**: Preserva el contexto del usuario al cambiar de idioma
+- **LocalStorage para preferencias**: Mantiene tema y configuraciones entre sesiones
+- **Expiración inteligente**: Limpia datos obsoletos automáticamente (5 segundos para cambios de idioma)
+
+### Experiencia de Usuario
+
+- **Smooth scrolling**: Desplazamiento suave en toda la aplicación
+- **Restauración de hash**: Navega a secciones específicas al cambiar de idioma
+- **Feedback visual**: Indicadores claros de acciones del usuario
+- **Transiciones fluidas**: Animaciones CSS optimizadas
+
+### Optimizaciones
+
+- **Assets optimizados**: Imágenes WebP para mejor rendimiento
+- **CSS modular**: Variables CSS para fácil mantenimiento
+- **Code splitting**: Carga eficiente de scripts
+- **Lazy loading**: Carga diferida de componentes no críticos
 
 ## 🤝 Contacto
 
