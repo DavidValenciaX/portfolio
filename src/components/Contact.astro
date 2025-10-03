@@ -164,6 +164,10 @@ const RESUME_PDF_PATH = lang === 'en'
   .contact-section {
     padding: 4rem 0;
     background: var(--bg-secondary);
+    /* Green gradient tokens (reusable) */
+    --green-gradient-start: #065f46; /* emerald-800 */
+    --green-gradient-mid: #10b981;   /* emerald-500 */
+    --green-gradient-end: #34d399;   /* emerald-400 */
   }
 
   .container {
@@ -247,6 +251,8 @@ const RESUME_PDF_PATH = lang === 'en'
 
   .contact-item a:hover {
     color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
   }
 
   .social-links {
@@ -271,17 +277,38 @@ const RESUME_PDF_PATH = lang === 'en'
     background: var(--accent-primary);
     color: white;
     border-color: var(--accent-primary);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
   }
-
   .download-resume-link {
+    /* Distinct blue gradient styles for the CV button */
+    --download-gradient-start: #1e3a8a; /* blue-900 */
+    --download-gradient-mid: #2563eb;   /* blue-600 */
+    --download-gradient-end: #3b82f6;   /* blue-500 */
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    background: linear-gradient(135deg, var(--download-gradient-start), var(--download-gradient-mid), var(--download-gradient-end));
+    color: #ffffff;
+    border: 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
   }
 
   .download-resume-link svg {
     flex-shrink: 0;
+  }
+
+  .download-resume-link:hover {
+    /* Switch to green gradient on hover */
+    background: linear-gradient(135deg, var(--green-gradient-start), var(--green-gradient-mid), var(--green-gradient-end));
+    filter: brightness(1.05);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .download-resume-link:focus-visible {
+    outline: 3px solid rgba(59, 130, 246, 0.6);
+    outline-offset: 2px;
   }
 
   .contact-form-container {
