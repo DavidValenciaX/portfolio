@@ -59,16 +59,26 @@ body {
   --text-primary: #f7fafc;
   --text-secondary: #e2e8f0;
   --text-muted: #a0aec0;
-  --accent-primary: #63b3ed;
-  --accent-primary-15: rgba(99, 179, 237, 0.15);
-  --accent-primary-20: rgba(99, 179, 237, 0.2);
-  --accent-primary-25: rgba(99, 179, 237, 0.25);
-  --accent-primary-30: rgba(99, 179, 237, 0.3);
-  --accent-secondary: #68d391;
-  --accent-secondary-15: rgba(104, 211, 145, 0.15);
+  --accent-primary: #2563eb; /* Más oscuro para mejor contraste con texto blanco */
+  --accent-primary-15: rgba(37, 99, 235, 0.15);
+  --accent-primary-20: rgba(37, 99, 235, 0.2);
+  --accent-primary-25: rgba(37, 99, 235, 0.25);
+  --accent-primary-30: rgba(37, 99, 235, 0.3);
+  --accent-secondary: #059669; /* Más oscuro para mejor contraste con texto blanco */
+  --accent-secondary-15: rgba(5, 150, 105, 0.15);
   --border-color: rgba(255, 255, 255, 0.1);
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.4);
+  
+  /* Gradient Colors - Green (darker for dark mode) */
+  --green-gradient-start: #064e3b; /* emerald-900 - más oscuro */
+  --green-gradient-mid: #059669;   /* emerald-600 - más oscuro */
+  --green-gradient-end: #10b981;   /* emerald-500 - más oscuro */
+  
+  /* Gradient Colors - Blue (darker for dark mode) */
+  --download-gradient-start: #1e3a8a; /* blue-900 */
+  --download-gradient-mid: #2563eb;   /* blue-600 */
+  --download-gradient-end: #3b82f6;   /* blue-500 */
 }
 
 /* Typography */
