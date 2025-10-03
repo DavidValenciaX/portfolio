@@ -5,9 +5,18 @@ import About from '../components/About.astro';
 import Skills from '../components/Skills.astro';
 import Projects from '../components/Projects.astro';
 import Contact from '../components/Contact.astro';
-import { getLangFromUrl, useTranslations } from '../i18n';
+import { getLangFromUrl, useTranslations, languages, defaultLang } from '../i18n';
 
-const lang = getLangFromUrl(Astro.url);
+// Generate static paths for both languages
+export async function getStaticPaths() {
+  return [
+    { params: { lang: undefined } }, // Default language (Spanish) at /
+    { params: { lang: 'en' } }        // English at /en
+  ];
+}
+
+const { lang: urlLang } = Astro.params;
+const lang = (urlLang && urlLang in languages ? urlLang : defaultLang) as keyof typeof languages;
 const t = useTranslations(lang);
 
 // Centralized resume data import (SSR/HMR optimization)
@@ -15,7 +24,7 @@ const resumeData = lang === 'es'
   ? await import('../../resume_es.json')
   : await import('../../resume_en.json');
 
-const { basics, education, certificates, languages, skills, projects } = resumeData.default;
+const { basics, education, certificates, languages: langs, skills, projects } = resumeData.default;
 ---
 
 <Layout title={`${t('nav.home')} - Oscar David Valencia`}>
@@ -24,9 +33,10 @@ const { basics, education, certificates, languages, skills, projects } = resumeD
     basics={basics} 
     education={education} 
     certificates={certificates} 
-    languages={languages} 
+    languages={langs} 
   />
   <Projects projects={projects} />
   <Skills skills={skills} />
   <Contact basics={basics} />
 </Layout>
+
