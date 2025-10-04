@@ -1,0 +1,97 @@
+---
+/**
+ * ParticlesBackground Component
+ * Renderiza una animación de partículas en el fondo que responde al movimiento del mouse
+ * Usa tsparticles para crear un efecto visual sutil y moderno que se adapta al tema
+ */
+---
+
+<!-- Contenedor para las partículas -->
+<div id="particles-background"></div>
+
+<script>
+  import { tsParticles } from "tsparticles-engine";
+  import { loadSlim } from "tsparticles-slim";
+  import { getParticlesConfig } from '../config/particles.config';
+  import type { Container } from "tsparticles-engine";
+
+  // Declaración de tipos globales
+  declare global {
+    interface Window {
+      particlesContainer?: Container;
+    }
+  }
+
+  /**
+   * Detecta si el tema actual es oscuro
+   * @returns true si el tema es oscuro, false en caso contrario
+   */
+  function isDarkMode(): boolean {
+    return document.documentElement.getAttribute('data-theme') === 'dark';
+  }
+
+  /**
+   * Inicializa o actualiza las partículas según el tema actual
+   */
+  async function initOrUpdateParticles(): Promise<void> {
+    try {
+      const isDark = isDarkMode();
+      const config = getParticlesConfig(isDark);
+
+      // Si ya existe un contenedor, destruirlo primero
+      if (window.particlesContainer) {
+        window.particlesContainer.destroy();
+      }
+
+      // Cargar e inicializar las partículas
+      await loadSlim(tsParticles);
+      window.particlesContainer = await tsParticles.load({
+        id: 'particles-background',
+        options: config,
+      });
+    } catch (error) {
+      console.error('Error initializing/updating particles:', error);
+    }
+  }
+
+  /**
+   * Observa cambios en el atributo data-theme para actualizar las partículas
+   */
+  function watchThemeChanges(): void {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+          initOrUpdateParticles();
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+  }
+
+  // Inicializar cuando el DOM esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      initOrUpdateParticles();
+      watchThemeChanges();
+    });
+  } else {
+    initOrUpdateParticles();
+    watchThemeChanges();
+  }
+</script>
+
+<style>
+  #particles-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+</style>
+
