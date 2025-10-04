@@ -246,3 +246,45 @@ a:hover {
     padding: 0 0.5rem;
   }
 }
+
+/* View Transitions API */
+@view-transition {
+    navigation: auto;
+}
+
+/* Profile photo transition */
+::view-transition-old(profile-photo),
+::view-transition-new(profile-photo) {
+    animation-duration: 0s;
+    animation-timing-function: step-end;
+}
+
+::view-transition-old(profile-photo) {
+    animation-name: fadeOut;
+}
+
+::view-transition-new(profile-photo) {
+    animation-name: fadeIn;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(1);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

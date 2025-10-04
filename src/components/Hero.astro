@@ -69,11 +69,19 @@ const t = useTranslations(lang);
       </div>
 
       <div class="hero-image">
-        <div class="image-container">
-          <img 
-            src="/profile.jpg" 
+        <div class="image-container" id="profile-image-container">
+          <img
+            id="profile-image"
+            src="/profile.jpg"
             alt={`${basics.name} - ${basics.label}`}
             class="profile-image"
+            loading="eager"
+          />
+          <img
+            id="smile-profile-image"
+            src="/smile_profile.jpg"
+            alt={`${basics.name} - ${basics.label} - Smiling`}
+            class="profile-image smile-image"
             loading="eager"
           />
           <div class="image-decoration"></div>
@@ -82,6 +90,150 @@ const t = useTranslations(lang);
     </div>
   </div>
 </section>
+
+<script>
+  let resetTimeout: number | null = null;
+  let isHolding = false;
+  let isMouseDown = false; // Track mouse button state
+
+  const profileImage = document.getElementById('profile-image') as HTMLImageElement;
+  const smileImage = document.getElementById('smile-profile-image') as HTMLImageElement;
+  const container = document.getElementById('profile-image-container') as HTMLDivElement;
+
+  // Debug logging function
+  function debugLog(message: string, data?: any) {
+    console.log(`[Profile Animation Debug] ${message}`, data ? data : '');
+  }
+
+  function showSmile() {
+    debugLog('showSmile() called', { isHolding, resetTimeout });
+    if (document.startViewTransition) {
+      document.startViewTransition(() => {
+        profileImage.style.opacity = '0';
+        smileImage.style.opacity = '1';
+        debugLog('Smile shown with ViewTransition');
+      });
+    } else {
+      profileImage.style.opacity = '0';
+      smileImage.style.opacity = '1';
+      debugLog('Smile shown without ViewTransition');
+    }
+  }
+
+  function hideSmile() {
+    debugLog('hideSmile() called', { isHolding, resetTimeout });
+    if (document.startViewTransition) {
+      document.startViewTransition(() => {
+        profileImage.style.opacity = '1';
+        smileImage.style.opacity = '0';
+        debugLog('Smile hidden with ViewTransition');
+      });
+    } else {
+      profileImage.style.opacity = '1';
+      smileImage.style.opacity = '0';
+      debugLog('Smile hidden without ViewTransition');
+    }
+  }
+
+  function startHold() {
+    debugLog('startHold() called', { isHolding, resetTimeout, isMouseDown });
+    isHolding = true;
+    if (resetTimeout) {
+      debugLog('Clearing existing timeout in startHold');
+      clearTimeout(resetTimeout);
+      resetTimeout = null;
+    }
+    showSmile();
+    debugLog('startHold() completed', { isHolding, resetTimeout, isMouseDown });
+  }
+
+  function endHold() {
+    debugLog('endHold() called', { isHolding, resetTimeout });
+    isHolding = false;
+    if (resetTimeout) {
+      debugLog('Clearing existing timeout in endHold');
+      clearTimeout(resetTimeout);
+    }
+    // Only hide smile if we're not currently holding
+    debugLog('Setting timeout to hide smile in 2 seconds');
+    resetTimeout = window.setTimeout(() => {
+      debugLog('Timeout triggered', { isHolding, resetTimeout });
+      if (!isHolding) {
+        debugLog('Hiding smile - isHolding is false');
+        hideSmile();
+      } else {
+        debugLog('NOT hiding smile - isHolding is still true');
+      }
+    }, 2000);
+    debugLog('endHold() completed', { isHolding, resetTimeout });
+  }
+
+  // Mouse events
+  container.addEventListener('mousedown', (e) => {
+    debugLog('mousedown event triggered', { isHolding, resetTimeout, isMouseDown });
+    isMouseDown = true;
+    startHold();
+  });
+  container.addEventListener('mouseup', (e) => {
+    debugLog('mouseup event triggered', { isHolding, resetTimeout, isMouseDown });
+    isMouseDown = false;
+    endHold();
+  });
+  container.addEventListener('mouseleave', (e) => {
+    debugLog('mouseleave event triggered', { isHolding, resetTimeout, isMouseDown });
+    // Only end hold if mouse button is not pressed
+    if (isHolding && !isMouseDown) {
+      debugLog('Mouse left while holding and mouse button not down, calling endHold');
+      endHold();
+    } else {
+      debugLog('Mouse left but mouse button still down or not holding, ignoring mouseleave');
+    }
+  });
+
+  // Global mouseup to handle mouse release outside container
+  document.addEventListener('mouseup', (e) => {
+    if (isMouseDown) {
+      debugLog('Global mouseup triggered', { isHolding, resetTimeout, isMouseDown });
+      isMouseDown = false;
+      if (isHolding) {
+        endHold();
+      }
+    }
+  });
+
+  // Touch events
+  container.addEventListener('touchstart', (e) => {
+    debugLog('touchstart event triggered', { isHolding, resetTimeout });
+    e.preventDefault();
+    startHold();
+  });
+  container.addEventListener('touchend', (e) => {
+    debugLog('touchend event triggered', { isHolding, resetTimeout });
+    endHold();
+  });
+  container.addEventListener('touchcancel', (e) => {
+    debugLog('touchcancel event triggered', { isHolding, resetTimeout });
+    endHold();
+  });
+
+  // Click event (for quick taps)
+  container.addEventListener('click', () => {
+    debugLog('click event triggered', { isHolding, resetTimeout });
+    if (!isHolding) {
+      debugLog('Click while not holding, showing smile for 2 seconds');
+      showSmile();
+      if (resetTimeout) {
+        clearTimeout(resetTimeout);
+      }
+      resetTimeout = window.setTimeout(() => {
+        debugLog('Click timeout triggered, hiding smile');
+        hideSmile();
+      }, 2000);
+    } else {
+      debugLog('Click ignored - currently holding');
+    }
+  });
+</script>
 
 <style>
   .hero {
@@ -221,14 +373,20 @@ const t = useTranslations(lang);
   }
 
   .profile-image {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
     border: 4px solid var(--accent-primary);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    position: relative;
     z-index: 2;
+  }
+
+  .smile-image {
+    opacity: 0;
   }
 
   .image-decoration {
