@@ -1,7 +1,7 @@
 ---
-import { getLangFromUrl, useTranslations } from '../i18n';
+import { useTranslations } from '../i18n';
 import { ExternalLink, Github, Calendar, Tag } from 'lucide-astro';
-import type { Project } from '../types/resume';
+import type { Project, Lang } from '../types/resume';
 
 // Import images
 import horariosAppThumbnail from '../assets/images/horarios_app_thumbnail.webp';
@@ -10,11 +10,12 @@ import distrimarcassjgThumbnail from '../assets/images/distrimarcassjg_thumbnail
 
 interface Props {
   projects: Project[];
+  lang?: Lang;
 }
 
-const { projects } = Astro.props;
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const { projects, lang } = Astro.props;
+const resolvedLang = lang ?? 'es';
+const t = useTranslations(resolvedLang);
 
 // Thumbnail mapping for projects
 const PROJECT_THUMBNAILS: Record<string, ImageMetadata> = {
@@ -34,7 +35,7 @@ function getProjectThumbnail(projectName: string): ImageMetadata | null {
 }
 ---
 
-<section class="projects" id="projects">
+<section class="projects" id={`projects-${resolvedLang}`}>
   <div class="container">
     <div class="section-header">
       <h2 class="section-title">{t('projects.title')}</h2>

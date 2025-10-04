@@ -1,6 +1,6 @@
 ---
-import { getLangFromUrl, useTranslations } from '../i18n';
-import type { Skill } from '../types/resume';
+import { useTranslations } from '../i18n';
+import type { Skill, Lang } from '../types/resume';
 import {
   siHtml5,
   siCss,
@@ -20,11 +20,12 @@ import {
 
 interface Props {
   skills: Skill[];
+  lang?: Lang;
 }
 
-const { skills } = Astro.props;
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const { skills, lang } = Astro.props;
+const resolvedLang = lang ?? 'es';
+const t = useTranslations(resolvedLang);
 
 // Constants for skill icon configuration
 const ICON_SIZE = 20;

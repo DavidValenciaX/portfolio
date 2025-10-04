@@ -1,18 +1,19 @@
 ---
-import { getLangFromUrl, useTranslations } from '../i18n';
+import { useTranslations } from '../i18n';
 import { Download, MapPin, Mail, Phone } from 'lucide-astro';
-import type { Basics } from '../types/resume';
+import type { Basics, Lang } from '../types/resume';
 
 interface Props {
   basics: Basics;
+  lang?: Lang;
 }
 
-const { basics } = Astro.props;
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const { basics, lang } = Astro.props;
+const resolvedLang = lang ?? 'es';
+const t = useTranslations(resolvedLang);
 ---
 
-<section class="hero" id="hero">
+<section class="hero" id={`hero-${resolvedLang}`}>
   <div class="container">
     <div class="hero-content">
       <div class="hero-text">
@@ -92,140 +93,146 @@ const t = useTranslations(lang);
 </section>
 
 <script>
-  let resetTimeout: number | null = null;
-  let isHolding = false;
-  let isMouseDown = false; // Track mouse button state
-  let holdStartTime: number | null = null; // Track when the hold started
-  let justFinishedHold = false; // Track if we just finished a hold operation
+  function setupSmile(container: HTMLDivElement) {
+    if ((container as HTMLDivElement).dataset.smileBound === 'true') return;
+    (container as HTMLDivElement).dataset.smileBound = 'true';
 
-  const profileImage = document.getElementById('profile-image') as HTMLImageElement;
-  const smileImage = document.getElementById('smile-profile-image') as HTMLImageElement;
-  const container = document.getElementById('profile-image-container') as HTMLDivElement;
+    const profileImage = container.querySelector('#profile-image') as HTMLImageElement;
+    const smileImage = container.querySelector('#smile-profile-image') as HTMLImageElement;
 
-  function showSmile() {
-    if (document.startViewTransition) {
-      document.startViewTransition(() => {
+    let resetTimeout: number | null = null;
+    let isHolding = false;
+    let isMouseDown = false; // Track mouse button state
+    let holdStartTime: number | null = null; // Track when the hold started
+    let justFinishedHold = false; // Track if we just finished a hold operation
+
+    function showSmile() {
+      if (document.startViewTransition) {
+        document.startViewTransition(() => {
+          profileImage.style.opacity = '0';
+          smileImage.style.opacity = '1';
+        });
+      } else {
         profileImage.style.opacity = '0';
         smileImage.style.opacity = '1';
-      });
-    } else {
-      profileImage.style.opacity = '0';
-      smileImage.style.opacity = '1';
-    }
-  }
-
-  function hideSmile() {
-    if (document.startViewTransition) {
-      document.startViewTransition(() => {
-        profileImage.style.opacity = '1';
-        smileImage.style.opacity = '0';
-      });
-    } else {
-      profileImage.style.opacity = '1';
-      smileImage.style.opacity = '0';
-    }
-  }
-
-  function startHold() {
-    isHolding = true;
-    holdStartTime = Date.now(); // Record when the hold started
-    if (resetTimeout) {
-      clearTimeout(resetTimeout);
-      resetTimeout = null;
-    }
-    showSmile();
-  }
-
-  function endHold() {
-    isHolding = false;
-    justFinishedHold = true; // Mark that we just finished a hold
-    
-    // Check if more than 2 seconds have passed since hold started
-    const elapsedTime = holdStartTime ? Date.now() - holdStartTime : 0;
-    
-    if (resetTimeout) {
-      clearTimeout(resetTimeout);
-    }
-    
-    if (elapsedTime >= 2000) {
-      // If more than 2 seconds have passed, hide smile immediately
-      hideSmile();
-      resetTimeout = null;
-    } else {
-      // Otherwise, set timeout to hide smile after remaining time
-      const remainingTime = 2000 - elapsedTime;
-      resetTimeout = window.setTimeout(() => {
-        if (!isHolding) {
-          hideSmile();
-        }
-      }, remainingTime);
-    }
-    
-    // Reset hold start time
-    holdStartTime = null;
-    
-    // Reset the justFinishedHold flag after a short delay to allow click event to be ignored
-    setTimeout(() => {
-      justFinishedHold = false;
-    }, 50);
-  }
-
-  // Mouse events
-  container.addEventListener('mousedown', () => {
-    isMouseDown = true;
-    startHold();
-  });
-  container.addEventListener('mouseup', () => {
-    isMouseDown = false;
-    endHold();
-  });
-  container.addEventListener('mouseleave', () => {
-    // Only end hold if mouse button is not pressed
-    if (isHolding && !isMouseDown) {
-      endHold();
-    }
-  });
-
-  // Global mouseup to handle mouse release outside container
-  document.addEventListener('mouseup', () => {
-    if (isMouseDown) {
-      isMouseDown = false;
-      if (isHolding) {
-        endHold();
       }
     }
-  });
 
-  // Touch events
-  container.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    startHold();
-  });
-  container.addEventListener('touchend', () => {
-    endHold();
-  });
-  container.addEventListener('touchcancel', () => {
-    endHold();
-  });
-
-  // Click event (for quick taps)
-  container.addEventListener('click', () => {
-    
-    // Ignore click events that happen immediately after finishing a hold
-    if (justFinishedHold) {
-      return;
+    function hideSmile() {
+      if (document.startViewTransition) {
+        document.startViewTransition(() => {
+          profileImage.style.opacity = '1';
+          smileImage.style.opacity = '0';
+        });
+      } else {
+        profileImage.style.opacity = '1';
+        smileImage.style.opacity = '0';
+      }
     }
-    
-    if (!isHolding) {
+
+    function startHold() {
+      isHolding = true;
+      holdStartTime = Date.now(); // Record when the hold started
+      if (resetTimeout) {
+        clearTimeout(resetTimeout);
+        resetTimeout = null;
+      }
       showSmile();
+    }
+
+    function endHold() {
+      isHolding = false;
+      justFinishedHold = true; // Mark that we just finished a hold
+      
+      // Check if more than 2 seconds have passed since hold started
+      const elapsedTime = holdStartTime ? Date.now() - holdStartTime : 0;
+      
       if (resetTimeout) {
         clearTimeout(resetTimeout);
       }
-      resetTimeout = window.setTimeout(() => {
+      
+      if (elapsedTime >= 2000) {
+        // If more than 2 seconds have passed, hide smile immediately
         hideSmile();
-      }, 2000);
+        resetTimeout = null;
+      } else {
+        // Otherwise, set timeout to hide smile after remaining time
+        const remainingTime = 2000 - elapsedTime;
+        resetTimeout = window.setTimeout(() => {
+          if (!isHolding) {
+            hideSmile();
+          }
+        }, remainingTime);
+      }
+      
+      // Reset hold start time
+      holdStartTime = null;
+      
+      // Reset the justFinishedHold flag after a short delay to allow click event to be ignored
+      setTimeout(() => {
+        justFinishedHold = false;
+      }, 50);
     }
-  });
+
+    // Mouse events
+    container.addEventListener('mousedown', () => {
+      isMouseDown = true;
+      startHold();
+    });
+    container.addEventListener('mouseup', () => {
+      isMouseDown = false;
+      endHold();
+    });
+    container.addEventListener('mouseleave', () => {
+      // Only end hold if mouse button is not pressed
+      if (isHolding && !isMouseDown) {
+        endHold();
+      }
+    });
+
+    // Global mouseup to handle mouse release outside container
+    document.addEventListener('mouseup', () => {
+      if (isMouseDown) {
+        isMouseDown = false;
+        if (isHolding) {
+          endHold();
+        }
+      }
+    });
+
+    // Touch events
+    container.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      startHold();
+    });
+    container.addEventListener('touchend', () => {
+      endHold();
+    });
+    container.addEventListener('touchcancel', () => {
+      endHold();
+    });
+
+    // Click event (for quick taps)
+    container.addEventListener('click', () => {
+      // Ignore click events that happen immediately after finishing a hold
+      if (justFinishedHold) {
+        return;
+      }
+      
+      if (!isHolding) {
+        showSmile();
+        if (resetTimeout) {
+          clearTimeout(resetTimeout);
+        }
+        resetTimeout = window.setTimeout(() => {
+          hideSmile();
+        }, 2000);
+      }
+    });
+  }
+
+  const containers = document.querySelectorAll('.image-container') as NodeListOf<HTMLDivElement>;
+  containers.forEach((c) => setupSmile(c));
 </script>
 
 <style>

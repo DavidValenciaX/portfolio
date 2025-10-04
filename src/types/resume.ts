@@ -92,3 +92,6 @@ export interface Resume {
   projects: Project[];
 }
 
+// Language type for i18n
+export type Lang = 'es' | 'en';
+

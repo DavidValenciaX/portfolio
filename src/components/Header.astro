@@ -1,23 +1,29 @@
 ---
-import { getLangFromUrl, useTranslations } from '../i18n';
+import { useTranslations } from '../i18n';
 import { Sun, Moon, Globe } from 'lucide-astro';
 import LogoBlack from '../assets/svg/personal_DV_black_logo.svg?raw';
 import LogoWhite from '../assets/svg/personal_DV_white_logo.svg?raw';
+import type { Lang } from '../types/resume';
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+interface Props {
+  lang?: Lang;
+}
+
+const { lang } = Astro.props;
+const resolvedLang = lang ?? 'es';
+const t = useTranslations(resolvedLang);
 ---
 
 <header class="header">
-  <a href="#hero" class="skip-link">
-    {lang === 'es' ? 'Saltar al contenido principal' : 'Skip to main content'}
+  <a href={`#hero-${resolvedLang}`} class="skip-link">
+    {resolvedLang === 'es' ? 'Saltar al contenido principal' : 'Skip to main content'}
   </a>
   <nav class="nav container">
     <div class="nav-brand">
       <a 
-        href={lang === 'es' ? '/' : '/en'} 
+        href={`#hero-${resolvedLang}`} 
         class="brand-link"
-        aria-label={lang === 'es' ? 'Ir al inicio - David Valencia' : 'Go to home - David Valencia'}
+        aria-label={resolvedLang === 'es' ? 'Ir al inicio - David Valencia' : 'Go to home - David Valencia'}
       >
         <div class="logo-container">
           <div class="logo logo-light" set:html={LogoBlack} />
@@ -30,16 +36,16 @@ const t = useTranslations(lang);
     <div class="nav-menu" id="nav-menu">
       <ul class="nav-list">
         <li class="nav-item">
-          <a href={lang === 'es' ? '/#hero' : '/en#hero'} class="nav-link">{t('nav.home')}</a>
+          <a href={`#hero-${resolvedLang}`} class="nav-link" data-i18n="nav.home" data-anchor="hero">{t('nav.home')}</a>
         </li>
         <li class="nav-item">
-          <a href={lang === 'es' ? '/#about' : '/en#about'} class="nav-link">{t('nav.about')}</a>
+          <a href={`#about-${resolvedLang}`} class="nav-link" data-i18n="nav.about" data-anchor="about">{t('nav.about')}</a>
         </li>
         <li class="nav-item">
-          <a href={lang === 'es' ? '/#projects' : '/en#projects'} class="nav-link">{t('nav.projects')}</a>
+          <a href={`#projects-${resolvedLang}`} class="nav-link" data-i18n="nav.projects" data-anchor="projects">{t('nav.projects')}</a>
         </li>
         <li class="nav-item">
-          <a href={lang === 'es' ? '/#contact' : '/en#contact'} class="nav-link">{t('nav.contact')}</a>
+          <a href={`#contact-${resolvedLang}`} class="nav-link" data-i18n="nav.contact" data-anchor="contact">{t('nav.contact')}</a>
         </li>
       </ul>
     </div>
@@ -50,6 +56,8 @@ const t = useTranslations(lang);
         class="control-btn" 
         aria-label={t('theme.toggle')}
         title={t('theme.toggle')}
+        data-i18n-title="theme.toggle"
+        data-i18n-aria="theme.toggle"
       >
         <Sun class="theme-icon sun-icon" size={20} />
         <Moon class="theme-icon moon-icon" size={20} />
@@ -61,15 +69,17 @@ const t = useTranslations(lang);
           class="control-btn" 
           aria-label={t('lang.toggle')}
           title={t('lang.toggle')}
+          data-i18n-title="lang.toggle"
+          data-i18n-aria="lang.toggle"
         >
           <Globe size={20} />
         </button>
         <div class="lang-dropdown" id="lang-dropdown">
-          <a href="/" class="lang-option" data-lang="es">
+          <a href="#" class="lang-option" data-lang="es">
             <span class="lang-flag">🇪🇸</span>
             Español
           </a>
-          <a href="/en" class="lang-option" data-lang="en">
+          <a href="#" class="lang-option" data-lang="en">
             <span class="lang-flag">🇺🇸</span>
             English
           </a>
@@ -392,6 +402,7 @@ const t = useTranslations(lang);
 <script>
   import { initTheme, toggleTheme, watchSystemTheme } from '../scripts/theme';
   import { setupLanguageSwitchListeners } from '../scripts/language-persistence';
+  import { ui, defaultLang } from '../i18n';
 
   // Initialize theme
   initTheme();
@@ -415,8 +426,68 @@ const t = useTranslations(lang);
     langDropdown?.classList.remove('active');
   });
 
-  // Setup language switch to preserve scroll position
-  setupLanguageSwitchListeners();
+  // Setup language option click to switch language client-side
+  const langOptions = document.querySelectorAll('.lang-option');
+  langOptions.forEach((option) => {
+    option.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = e.currentTarget as HTMLElement;
+      const nextLang = target.dataset.lang || 'es';
+      window.dispatchEvent(new CustomEvent('switch-language', { detail: { lang: nextLang } }));
+    });
+  });
+
+  // Apply translations to header on initial load and when language changes
+  function translate(key: keyof typeof ui[typeof defaultLang], lang: keyof typeof ui) {
+    return ui[lang]?.[key] ?? ui[defaultLang][key];
+  }
+
+  function applyHeaderTranslations(lang: keyof typeof ui) {
+    // Update visible nav link texts
+    document.querySelectorAll('[data-i18n]')?.forEach((el) => {
+      const key = (el as HTMLElement).getAttribute('data-i18n') as keyof typeof ui[typeof defaultLang] | null;
+      if (!key) return;
+      (el as HTMLElement).textContent = translate(key, lang);
+    });
+
+    // Update anchors to point to language-specific section IDs
+    const skipLink = document.querySelector('.skip-link') as HTMLAnchorElement | null;
+    if (skipLink) skipLink.href = `#hero-${lang}`;
+    const brandLink = document.querySelector('.brand-link') as HTMLAnchorElement | null;
+    if (brandLink) brandLink.href = `#hero-${lang}`;
+
+    document.querySelectorAll('.nav-link')?.forEach((el) => {
+      const base = (el as HTMLAnchorElement).getAttribute('data-anchor');
+      if (!base) return;
+      (el as HTMLAnchorElement).href = `#${base}-${lang}`;
+    });
+
+    // Update control buttons' aria-label and title
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    if (themeToggleBtn) {
+      const label = translate('theme.toggle', lang);
+      themeToggleBtn.setAttribute('aria-label', label);
+      themeToggleBtn.setAttribute('title', label);
+    }
+
+    const langToggleBtn = document.getElementById('lang-toggle');
+    if (langToggleBtn) {
+      const label = translate('lang.toggle', lang);
+      langToggleBtn.setAttribute('aria-label', label);
+      langToggleBtn.setAttribute('title', label);
+    }
+  }
+
+  // Initialize header translations based on persisted preference
+  const initialLang = (localStorage.getItem('lang') as keyof typeof ui) || 'es';
+  applyHeaderTranslations(initialLang);
+
+  // React to global language switch event
+  window.addEventListener('switch-language', (e) => {
+    const lang = (e as CustomEvent).detail?.lang as keyof typeof ui | undefined;
+    if (!lang) return;
+    applyHeaderTranslations(lang);
+  });
 
   // Mobile navigation toggle
   const navToggle = document.getElementById('nav-toggle');

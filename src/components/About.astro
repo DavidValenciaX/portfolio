@@ -1,21 +1,22 @@
 ---
-import { getLangFromUrl, useTranslations } from '../i18n';
+import { useTranslations } from '../i18n';
 import { GraduationCap, Globe } from 'lucide-astro';
-import type { Basics, Education, Certificate, Language } from '../types/resume';
+import type { Basics, Education, Certificate, Language, Lang } from '../types/resume';
 
 interface Props {
   basics: Basics;
   education: Education[];
   certificates: Certificate[];
   languages: Language[];
+  lang?: Lang;
 }
 
-const { basics, education, certificates, languages } = Astro.props;
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const { basics, education, certificates, languages, lang } = Astro.props;
+const resolvedLang = lang ?? 'es';
+const t = useTranslations(resolvedLang);
 ---
 
-<section class="about" id="about">
+<section class="about" id={`about-${resolvedLang}`}>
   <div class="container">
     <div class="section-header">
       <h2 class="section-title">{t('about.title')}</h2>

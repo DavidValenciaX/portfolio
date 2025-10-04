@@ -1,0 +1,74 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Skills from '../components/Skills.astro';
+import Projects from '../components/Projects.astro';
+import Contact from '../components/Contact.astro';
+import type { Resume } from '../types/resume';
+
+// Import both resumes to render a single page with dynamic language toggle
+const resumeEs: { default: Resume } = await import('../../resume_es.json');
+const resumeEn: { default: Resume } = await import('../../resume_en.json');
+const { basics: basicsEs, education: educationEs, certificates: certificatesEs, languages: langsEs, skills: skillsEs, projects: projectsEs } = resumeEs.default;
+const { basics: basicsEn, education: educationEn, certificates: certificatesEn, languages: langsEn, skills: skillsEn, projects: projectsEn } = resumeEn.default;
+---
+
+<Layout title={`Oscar David Valencia - Portfolio`}>
+  <!-- Spanish View -->
+  <section class="lang-view" data-lang="es">
+    <Hero basics={basicsEs} lang="es" />
+    <About 
+      basics={basicsEs} 
+      education={educationEs} 
+      certificates={certificatesEs} 
+      languages={langsEs}
+      lang="es"
+    />
+    <Projects projects={projectsEs} lang="es" />
+    <Skills skills={skillsEs} lang="es" />
+    <Contact basics={basicsEs} lang="es" />
+  </section>
+
+  <!-- English View -->
+  <section class="lang-view" data-lang="en" style="display:none;">
+    <Hero basics={basicsEn} lang="en" />
+    <About 
+      basics={basicsEn} 
+      education={educationEn} 
+      certificates={certificatesEn} 
+      languages={langsEn}
+      lang="en"
+    />
+    <Projects projects={projectsEn} lang="en" />
+    <Skills skills={skillsEn} lang="en" />
+    <Contact basics={basicsEn} lang="en" />
+  </section>
+
+  <script>
+    import { saveScrollPosition, restoreScrollPosition } from '../scripts/language-persistence';
+    const DEFAULT_LANG = localStorage.getItem('lang') || 'es';
+
+    function applyLanguage(lang: string) {
+      document.documentElement.setAttribute('lang', lang);
+      document.querySelectorAll('.lang-view').forEach(el => {
+        const isMatch = el.getAttribute('data-lang') === lang;
+        (el as HTMLElement).style.display = isMatch ? '' : 'none';
+      });
+    }
+
+    // Initialize view on load
+    applyLanguage(DEFAULT_LANG);
+
+    // Expose global handler for header to call
+    window.addEventListener('switch-language', (e) => {
+      const lang = (e as CustomEvent).detail?.lang;
+      if (!lang) return;
+      saveScrollPosition();
+      localStorage.setItem('lang', lang);
+      applyLanguage(lang);
+      setTimeout(() => restoreScrollPosition(), 100);
+    });
+  </script>
+</Layout>
+

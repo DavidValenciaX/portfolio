@@ -1,18 +1,19 @@
 ---
 import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Download } from 'lucide-astro';
-import { getLangFromUrl, useTranslations } from '../i18n';
-import type { Basics, Profile } from '../types/resume';
+import { useTranslations } from '../i18n';
+import type { Basics, Profile, Lang } from '../types/resume';
 
 interface Props {
   basics: Basics;
+  lang?: Lang;
 }
 
-const { basics } = Astro.props;
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const { basics, lang } = Astro.props;
+const resolvedLang = lang ?? 'es';
+const t = useTranslations(resolvedLang);
 
 // Resume PDF path based on language
-const RESUME_PDF_PATH = lang === 'en' 
+const RESUME_PDF_PATH = resolvedLang === 'en' 
   ? '/Oscar_David_Valencia_resume_en.pdf'
   : '/Oscar_David_Valencia_resume_es.pdf';
 
@@ -20,7 +21,7 @@ const RESUME_PDF_PATH = lang === 'en'
 const WEB3FORMS_ACCESS_KEY = import.meta.env.WEB3FORMSACCESSKEY || '';
 ---
 
-<section id="contact" class="contact-section">
+<section id={`contact-${resolvedLang}`} class="contact-section">
   <div class="container">
     <div class="section-header">
       <h2>{t('contact.title')}</h2>
