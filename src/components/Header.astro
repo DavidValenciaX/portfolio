@@ -64,25 +64,29 @@ const t = useTranslations(resolvedLang);
       </button>
 
       <div class="language-selector">
-        <button 
-          id="lang-toggle" 
-          class="control-btn" 
-          aria-label={t('lang.toggle')}
-          title={t('lang.toggle')}
-          data-i18n-title="lang.toggle"
-          data-i18n-aria="lang.toggle"
-        >
-          <Globe size={20} />
-        </button>
-        <div class="lang-dropdown" id="lang-dropdown">
-          <a href="#" class="lang-option" data-lang="es">
-            <span class="lang-flag">🇪🇸</span>
-            Español
-          </a>
-          <a href="#" class="lang-option" data-lang="en">
-            <span class="lang-flag">🇺🇸</span>
-            English
-          </a>
+        <div class="lang-inline">
+          <button
+            class="lang-option"
+            id="lang-btn-es"
+            data-lang="es"
+            aria-label={resolvedLang === 'es' ? 'Cambiar a español' : 'Switch to Spanish'}
+            title={resolvedLang === 'es' ? 'Español' : 'Spanish'}
+            hidden={resolvedLang === 'es'}
+          >
+            <Globe class="lang-icon" size={16} />
+            <span class="lang-code">Español</span>
+          </button>
+          <button
+            class="lang-option"
+            id="lang-btn-en"
+            data-lang="en"
+            aria-label={resolvedLang === 'es' ? 'Cambiar a inglés' : 'Switch to English'}
+            title={resolvedLang === 'es' ? 'Inglés' : 'English'}
+            hidden={resolvedLang === 'en'}
+          >
+            <Globe class="lang-icon" size={16} />
+            <span class="lang-code">English</span>
+          </button>
         </div>
       </div>
 
@@ -275,45 +279,46 @@ const t = useTranslations(resolvedLang);
     position: relative;
   }
 
-  .lang-dropdown {
-    position: absolute;
-    top: calc(100% + 0.5rem);
-    right: 0;
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 0.5rem;
-    box-shadow: var(--shadow);
-    min-width: 150px;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
-    z-index: 100;
-  }
-
-  .lang-dropdown.active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+  .lang-inline {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   .lang-option {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    color: var(--text-secondary);
-    text-decoration: none;
+    gap: 0.5rem;
+    height: 40px;
+    padding: 0 0.75rem;
+    box-sizing: border-box;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    cursor: pointer;
     transition: all 0.3s ease;
   }
 
   .lang-option:hover {
-    background: var(--bg-secondary);
-    color: var(--accent-primary);
+    background: var(--accent-primary);
+    color: white;
+    transform: translateY(-2px);
   }
 
-  .lang-flag {
-    font-size: 1.2rem;
+  /* Asegurar que el atributo hidden realmente oculte el botón */
+  .lang-option[hidden] {
+    display: none !important;
+  }
+
+  .lang-icon {
+    display: inline-flex;
+    color: var(--text-secondary);
+  }
+
+  .lang-code {
+    font-size: 0.85rem;
+    font-weight: 600;
   }
 
   .nav-toggle {
@@ -396,6 +401,10 @@ const t = useTranslations(resolvedLang);
       width: 36px;
       height: 36px;
     }
+
+    .lang-option {
+      height: 36px;
+    }
   }
 </style>
 
@@ -411,19 +420,7 @@ const t = useTranslations(resolvedLang);
   const themeToggle = document.getElementById('theme-toggle');
   themeToggle?.addEventListener('click', toggleTheme);
 
-  // Language toggle
-  const langToggle = document.getElementById('lang-toggle');
-  const langDropdown = document.getElementById('lang-dropdown');
-
-  langToggle?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    langDropdown?.classList.toggle('active');
-  });
-
-  // Close dropdown when clicking outside
-  document.addEventListener('click', () => {
-    langDropdown?.classList.remove('active');
-  });
+  // Selector de idioma inline (ES/EN)
 
   // Setup language option click to switch language client-side
   const langOptions = document.querySelectorAll('.lang-option');
@@ -474,6 +471,15 @@ const t = useTranslations(resolvedLang);
       const label = translate('lang.toggle', lang);
       langToggleBtn.setAttribute('aria-label', label);
       langToggleBtn.setAttribute('title', label);
+    }
+
+    // Mostrar solo el botón contrario al idioma actual
+    const btnEs = document.getElementById('lang-btn-es');
+    const btnEn = document.getElementById('lang-btn-en');
+    if (btnEs && btnEn) {
+      const showEs = lang === 'en';
+      btnEs.toggleAttribute('hidden', !showEs);
+      btnEn.toggleAttribute('hidden', showEs);
     }
   }
 
