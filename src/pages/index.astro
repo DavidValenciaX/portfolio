@@ -46,7 +46,6 @@ const { basics: basicsEn, education: educationEn, certificates: certificatesEn, 
   </section>
 
   <script>
-    import { saveScrollPosition, restoreScrollPosition } from '../scripts/language-persistence';
     const DEFAULT_LANG = localStorage.getItem('lang') || 'es';
 
     function applyLanguage(lang: string) {
@@ -64,10 +63,8 @@ const { basics: basicsEn, education: educationEn, certificates: certificatesEn, 
     window.addEventListener('switch-language', (e) => {
       const lang = (e as CustomEvent).detail?.lang;
       if (!lang) return;
-      saveScrollPosition();
       localStorage.setItem('lang', lang);
       applyLanguage(lang);
-      setTimeout(() => restoreScrollPosition(), 100);
     });
   </script>
 </Layout>
