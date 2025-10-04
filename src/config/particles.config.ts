@@ -19,9 +19,15 @@ const PARTICLE_MOVE_RANDOM = true;
 const PARTICLE_MOVE_STRAIGHT = false;
 const PARTICLE_MOVE_OUT_MODE = 'out' as const;
 
-// Constantes de interactividad
-const MOUSE_ATTRACT_DISTANCE = 200;
-const MOUSE_ATTRACT_SPEED = 0.5;
+// Constantes de interactividad - Repulsión
+const MOUSE_REPULSE_DISTANCE = 150;       // Radio de repulsión (px)
+const MOUSE_REPULSE_SPEED = 1;            // Velocidad de repulsión (1-10, mayor = más rápido)
+const MOUSE_REPULSE_DURATION = 0.4;       // Duración del efecto (segundos)
+const MOUSE_REPULSE_FACTOR = 3;           // Factor de intensidad (1-10, mayor = más fuerte)
+const MOUSE_REPULSE_EASING = 'ease-out-quad' as const; // Tipo de desaceleración para efecto "onda"
+const MOUSE_REPULSE_MAX_SPEED = 50;       // Velocidad máxima de las partículas al ser repelidas
+
+// Constantes de enlaces entre partículas
 const LINE_LINK_DISTANCE = 150;
 const LINE_LINK_OPACITY = 0.3;
 
@@ -49,7 +55,7 @@ export function getParticlesConfig(isDarkMode: boolean): ISourceOptions {
       events: {
         onHover: {
           enable: true,
-          mode: 'attract',
+          mode: 'repulse',
         },
         resize: {
           enable: true,
@@ -57,10 +63,13 @@ export function getParticlesConfig(isDarkMode: boolean): ISourceOptions {
         },
       },
       modes: {
-        attract: {
-          distance: MOUSE_ATTRACT_DISTANCE,
-          duration: 0.4,
-          speed: MOUSE_ATTRACT_SPEED,
+        repulse: {
+          distance: MOUSE_REPULSE_DISTANCE,    // Radio de efecto
+          speed: MOUSE_REPULSE_SPEED,          // Velocidad inicial
+          duration: MOUSE_REPULSE_DURATION,    // Duración
+          factor: MOUSE_REPULSE_FACTOR,        // Intensidad
+          easing: MOUSE_REPULSE_EASING,        // Curva de desaceleración (efecto onda)
+          maxSpeed: MOUSE_REPULSE_MAX_SPEED,   // Límite de velocidad
         },
       },
     },
@@ -111,3 +120,59 @@ export function getParticlesConfig(isDarkMode: boolean): ISourceOptions {
   };
 }
 
+/**
+ * GUÍA DE PARÁMETROS AVANZADOS
+ * =============================
+ * 
+ * PARÁMETROS DE REPULSE:
+ * ----------------------
+ * distance: Radio en píxeles donde las partículas son repelidas (50-300)
+ * speed: Velocidad de repulsión (0.1-10, mayor = más rápido)
+ * duration: Duración del efecto en segundos (0.1-2)
+ * factor: Intensidad de la repulsión (1-10, mayor = más fuerte)
+ * maxSpeed: Velocidad máxima que pueden alcanzar las partículas (10-100)
+ * easing: Curva de animación para efecto más orgánico
+ * 
+ * TIPOS DE EASING (curvas de animación):
+ * ---------------------------------------
+ * Para efecto "onda en agua" (rápido al inicio, desacelera):
+ * - 'ease-out-quad'   ⭐ Recomendado - Desaceleración suave
+ * - 'ease-out-cubic'  ⭐ Desaceleración más pronunciada
+ * - 'ease-out-quart'  - Desaceleración muy fuerte
+ * - 'ease-out-quint'  - Desaceleración extrema
+ * - 'ease-out-expo'   - Desaceleración exponencial
+ * - 'ease-out-circ'   - Desaceleración circular
+ * - 'ease-out-back'   - Desaceleración con "rebote" al final
+ * 
+ * Para efecto más suave:
+ * - 'ease-in-out-quad'  - Aceleración y desaceleración equilibradas
+ * - 'ease-in-out-cubic' - Transición muy suave
+ * 
+ * OTROS MODOS DE INTERACCIÓN DISPONIBLES:
+ * ----------------------------------------
+ * Puedes cambiar mode: 'repulse' por:
+ * 
+ * - 'attract'  - Las partículas son atraídas hacia el cursor
+ * - 'bubble'   - Las partículas crecen cerca del cursor
+ * - 'grab'     - Conecta las partículas cercanas con líneas al cursor
+ * - 'push'     - Añade nuevas partículas al hacer hover
+ * - 'remove'   - Elimina partículas cerca del cursor
+ * - 'slow'     - Desacelera las partículas cerca del cursor
+ * 
+ * También puedes combinar varios modos:
+ * mode: ['repulse', 'grab'] - Repulsión + conexiones visuales
+ * 
+ * EJEMPLO DE CONFIGURACIÓN "ONDA EN AGUA":
+ * -----------------------------------------
+ * const MOUSE_REPULSE_DISTANCE = 200;
+ * const MOUSE_REPULSE_SPEED = 3;
+ * const MOUSE_REPULSE_FACTOR = 5;
+ * const MOUSE_REPULSE_EASING = 'ease-out-expo';
+ * const MOUSE_REPULSE_MAX_SPEED = 50;
+ * 
+ * Esto crea un efecto donde:
+ * 1. Las partículas se alejan rápidamente al inicio (speed: 3)
+ * 2. Desaceleran exponencialmente (ease-out-expo) como ondas en agua
+ * 3. Área de efecto amplia (distance: 200)
+ * 4. Efecto fuerte (factor: 5)
+ */
