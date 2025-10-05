@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://davidvalencia.site/sitemap.xml
+
+# Security
+Disallow: /api/
+Disallow: /.env
+Disallow: /config/

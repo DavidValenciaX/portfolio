@@ -1,0 +1,27 @@
+{
+  "name": "Oscar David Valencia - Portfolio",
+  "short_name": "David Valencia",
+  "description": "Portfolio profesional de Oscar David Valencia - Ingeniero de Software Full-Stack",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "es",
+  "categories": ["portfolio", "developer", "software"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/profile.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}
