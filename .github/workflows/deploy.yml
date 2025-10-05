@@ -1,0 +1,59 @@
+# .github/workflows/deploy.yml
+name: Deploy Portfolio to Oracle VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build Astro project
+        run: bun run build
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add VPS to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H 149.130.181.250 >> ~/.ssh/known_hosts
+
+      - name: Rsync built files to VPS
+        run: |
+          rsync -avz --delete \
+            --exclude=".git" \
+            --exclude="node_modules" \
+            --exclude="src" \
+            --exclude=".env" \
+            --exclude="bun.lock" \
+            --exclude="tsconfig.json" \
+            --exclude="astro.config.mjs" \
+            --exclude="package.json" \
+            --exclude="README.md" \
+            --exclude="PRD.md" \
+            --exclude="programming_best_practices.md" \
+            --exclude="resume_*.json" \
+            ./dist/ ubuntu@149.130.181.250:/home/ubuntu/portfolio/
+
+      - name: Set proper permissions
+        run: |
+          ssh ubuntu@149.130.181.250 << 'EOF'
+            chmod -R 755 /home/ubuntu/portfolio/
+          EOF
