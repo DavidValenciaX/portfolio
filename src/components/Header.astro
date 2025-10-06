@@ -339,6 +339,13 @@ const t = useTranslations(resolvedLang);
     transition: all 0.3s ease;
   }
 
+  /* Tablet and smaller desktop styles */
+  @media (max-width: 1280px) {
+    .nav {
+      padding: 1rem;
+    }
+  }
+
   /* Mobile Styles */
   @media (max-width: 768px) {
     .nav-toggle {
@@ -386,7 +393,7 @@ const t = useTranslations(resolvedLang);
 
   @media (max-width: 480px) {
     .nav {
-      padding: 0.75rem 0;
+      padding: 0.75rem 1rem;
     }
 
     .brand-text {
