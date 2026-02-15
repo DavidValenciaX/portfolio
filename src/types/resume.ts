@@ -70,7 +70,7 @@ export interface Language {
 export interface Project {
   name: string;
   description: string;
-  highlights: string[];
+  highlights?: string[];
   keywords: string[];
   startDate: string;
   endDate: string;

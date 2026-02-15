@@ -30,7 +30,6 @@ export const ui = {
     'projects.title': 'Proyectos',
     'projects.viewProject': 'Ver Proyecto',
     'projects.viewCode': 'Ver Código',
-    'projects.highlights': 'Características Destacadas',
     'projects.technologies': 'Tecnologías',
     'projects.moreProjects': '¿Quieres ver más proyectos? Visita mi perfil de GitHub',
     'projects.viewAllProjects': 'Ver Todos los Proyectos',
@@ -77,7 +76,7 @@ export const ui = {
     'projects.title': 'Projects',
     'projects.viewProject': 'View Project',
     'projects.viewCode': 'View Code',
-    'projects.highlights': 'Key Features',
+
     'projects.technologies': 'Technologies',
     'projects.moreProjects': 'Want to see more projects? Visit my GitHub profile',
     'projects.viewAllProjects': 'View All Projects',
