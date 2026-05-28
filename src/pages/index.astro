@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import About from '../components/About.astro';
+import Experience from '../components/Experience.astro';
 import Skills from '../components/Skills.astro';
 import Projects from '../components/Projects.astro';
 import Contact from '../components/Contact.astro';
@@ -10,8 +11,8 @@ import type { Resume } from '../types/resume';
 // Import both resumes to render a single page with dynamic language toggle
 const resumeEs: { default: Resume } = await import('../../resume_es.json');
 const resumeEn: { default: Resume } = await import('../../resume_en.json');
-const { basics: basicsEs, education: educationEs, certificates: certificatesEs, languages: langsEs, skills: skillsEs, projects: projectsEs } = resumeEs.default;
-const { basics: basicsEn, education: educationEn, certificates: certificatesEn, languages: langsEn, skills: skillsEn, projects: projectsEn } = resumeEn.default;
+const { basics: basicsEs, work: workEs, education: educationEs, certificates: certificatesEs, languages: langsEs, skills: skillsEs, projects: projectsEs } = resumeEs.default;
+const { basics: basicsEn, work: workEn, education: educationEn, certificates: certificatesEn, languages: langsEn, skills: skillsEn, projects: projectsEn } = resumeEn.default;
 ---
 
 <Layout title={`Oscar David Valencia - Portfolio`}>
@@ -25,6 +26,7 @@ const { basics: basicsEn, education: educationEn, certificates: certificatesEn, 
       languages={langsEs}
       lang="es"
     />
+    <Experience work={workEs} lang="es" />
     <Projects projects={projectsEs} lang="es" />
     <Skills skills={skillsEs} lang="es" />
     <Contact basics={basicsEs} lang="es" />
@@ -40,6 +42,7 @@ const { basics: basicsEn, education: educationEn, certificates: certificatesEn, 
       languages={langsEn}
       lang="en"
     />
+    <Experience work={workEn} lang="en" />
     <Projects projects={projectsEn} lang="en" />
     <Skills skills={skillsEn} lang="en" />
     <Contact basics={basicsEn} lang="en" />

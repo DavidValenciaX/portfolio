@@ -1,0 +1,200 @@
+---
+import { useTranslations } from '../i18n';
+import { Briefcase, Calendar } from 'lucide-astro';
+import type { WorkExperience, Lang } from '../types/resume';
+
+interface Props {
+  work: WorkExperience[];
+  lang?: Lang;
+}
+
+const { work, lang } = Astro.props;
+const resolvedLang = lang ?? 'es';
+const t = useTranslations(resolvedLang);
+const locale = resolvedLang === 'es' ? 'es-ES' : 'en-US';
+
+function formatDate(date?: string): string {
+  if (!date) return t('about.present');
+
+  const parsedDate = new Date(`${date}-01T00:00:00Z`);
+  return new Intl.DateTimeFormat(locale, {
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(parsedDate);
+}
+---
+
+<section class="experience" id={`experience-${resolvedLang}`}>
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">{t('experience.title')}</h2>
+    </div>
+
+    <div class="experience-list">
+      {work.map((job) => (
+        <article class="experience-card">
+          <div class="experience-header">
+            <div class="experience-icon">
+              <Briefcase size={22} />
+            </div>
+            <div>
+              <h3>{job.position}</h3>
+              <p class="company">{job.name} · {job.location}</p>
+              <p class="date-range">
+                <Calendar size={15} />
+                <span>{formatDate(job.startDate)} - {formatDate(job.endDate)}</span>
+              </p>
+            </div>
+          </div>
+
+          <p class="description">{job.description}</p>
+
+          {job.highlights?.length > 0 && (
+            <ul class="highlights">
+              {job.highlights.map((highlight) => (
+                <li>{highlight}</li>
+              ))}
+            </ul>
+          )}
+
+          {job.url && (
+            <a class="experience-link" href={job.url} target="_blank" rel="noopener noreferrer">
+              {resolvedLang === 'es' ? 'Ver sitio' : 'View site'}
+            </a>
+          )}
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .experience {
+    padding: 5rem 0;
+    background: var(--bg-secondary);
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+
+  .experience-list {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .experience-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+
+  .experience-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.1);
+    border-color: var(--accent-primary-30);
+  }
+
+  .experience-header {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .experience-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    color: var(--accent-primary);
+    background: var(--accent-primary-15);
+    border: 1px solid var(--accent-primary-25);
+    border-radius: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .experience-header h3 {
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+  }
+
+  .company,
+  .date-range,
+  .description,
+  .highlights li {
+    color: var(--text-secondary);
+  }
+
+  .company {
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+
+  .date-range {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    margin-bottom: 0;
+  }
+
+  .date-range svg {
+    color: var(--accent-primary);
+  }
+
+  .description {
+    line-height: 1.65;
+    margin-bottom: 1rem;
+  }
+
+  .highlights {
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+
+  .highlights li {
+    margin-bottom: 0.5rem;
+    line-height: 1.55;
+  }
+
+  .experience-link {
+    display: inline-flex;
+    margin-top: 1rem;
+    color: var(--accent-primary);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .experience-link:hover {
+    color: var(--accent-secondary);
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .experience {
+      padding: 3rem 0;
+    }
+
+    .section-title {
+      font-size: 2rem;
+    }
+
+    .experience-card {
+      padding: 1.5rem;
+    }
+  }
+</style>

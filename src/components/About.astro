@@ -34,6 +34,10 @@ const t = useTranslations(resolvedLang);
               <div>
                 <h4>{t('about.education')}</h4>
                 <p>{education[0].area}</p>
+                <div class="institution">
+                  <span class="institution-logo" aria-label={t('about.institutionLogoPlaceholder')}>USCO</span>
+                  <span>{education[0].institution}</span>
+                </div>
               </div>
             </div>
             <div class="stat-item">
@@ -150,6 +154,31 @@ const t = useTranslations(resolvedLang);
     font-size: 0.85rem;
     color: var(--text-secondary);
     margin-bottom: 0;
+  }
+
+  .institution {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+  }
+
+  .institution-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    height: 24px;
+    padding: 0 0.45rem;
+    border-radius: 999px;
+    background: var(--accent-primary-15);
+    color: var(--accent-primary);
+    border: 1px solid var(--accent-primary-25);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
   }
 
   .about-sidebar {
