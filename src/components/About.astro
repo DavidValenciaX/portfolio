@@ -1,6 +1,7 @@
 ---
 import { useTranslations } from '../i18n';
 import { GraduationCap, Globe } from 'lucide-astro';
+import uscoLogo from '../assets/svg/Escudo_de_la_Universidad_Surcolombiana.svg';
 import type { Basics, Education, Certificate, Language, Lang } from '../types/resume';
 
 interface Props {
@@ -35,7 +36,12 @@ const t = useTranslations(resolvedLang);
                 <h4>{t('about.education')}</h4>
                 <p>{education[0].area}</p>
                 <div class="institution">
-                  <span class="institution-logo" aria-label={t('about.institutionLogoPlaceholder')}>USCO</span>
+                  <img
+                    class="institution-logo"
+                    src={uscoLogo.src}
+                    alt={t('about.institutionLogoPlaceholder')}
+                    loading="lazy"
+                  />
                   <span>{education[0].institution}</span>
                 </div>
               </div>
@@ -166,19 +172,10 @@ const t = useTranslations(resolvedLang);
   }
 
   .institution-logo {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 42px;
-    height: 24px;
-    padding: 0 0.45rem;
-    border-radius: 999px;
-    background: var(--accent-primary-15);
-    color: var(--accent-primary);
-    border: 1px solid var(--accent-primary-25);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    flex-shrink: 0;
   }
 
   .about-sidebar {

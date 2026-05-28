@@ -7,6 +7,7 @@ import type { Project, Lang } from '../types/resume';
 import horariosAppThumbnail from '../assets/images/horarios_app_thumbnail.webp';
 import printNelsyThumbnail from '../assets/images/print_nelsy_thumbnail.webp';
 import distrimarcassjgThumbnail from '../assets/images/distrimarcassjg_thumbnail.webp';
+import ascuitaThumbnail from '../assets/images/acuita_thumbnail.jpg';
 
 interface Props {
   projects: Project[];
@@ -21,7 +22,8 @@ const t = useTranslations(resolvedLang);
 const PROJECT_THUMBNAILS: Record<string, ImageMetadata> = {
   'Horarios App': horariosAppThumbnail,
   'Print Nelsy': printNelsyThumbnail,
-  'Distri Marcas SJG': distrimarcassjgThumbnail
+  'Distri Marcas SJG': distrimarcassjgThumbnail,
+  'Ascuita': ascuitaThumbnail
 };
 
 // Function to get thumbnail for a project
