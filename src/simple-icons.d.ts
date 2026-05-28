@@ -16,6 +16,7 @@ declare module 'simple-icons' {
   export const siHtml5: SimpleIcon;
   export const siCss: SimpleIcon;
   export const siJavascript: SimpleIcon;
+  export const siReact: SimpleIcon;
   export const siNodedotjs: SimpleIcon;
   export const siExpress: SimpleIcon;
   export const siSwagger: SimpleIcon;
@@ -27,5 +28,10 @@ declare module 'simple-icons' {
   export const siGithub: SimpleIcon;
   export const siWordpress: SimpleIcon;
   export const siWoo: SimpleIcon;
+  export const siPython: SimpleIcon;
+  export const siFirebase: SimpleIcon;
+  export const siKubernetes: SimpleIcon;
+  export const siGooglecloud: SimpleIcon;
+  export const siPytest: SimpleIcon;
 }
 

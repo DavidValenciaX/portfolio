@@ -1,27 +1,7 @@
 ---
 import { useTranslations } from '../i18n';
 import type { Skill, Lang } from '../types/resume';
-import {
-  siHtml5,
-  siCss,
-  siJavascript,
-  siNodedotjs,
-  siExpress,
-  siSwagger,
-  siPostgresql,
-  siMongodb,
-  siJest,
-  siGithubactions,
-  siGit,
-  siGithub,
-  siWordpress,
-  siWoo,
-  siPython,
-  siFirebase,
-  siKubernetes,
-  siGooglecloud,
-  siPytest,
-} from 'simple-icons';
+import * as simpleIcons from 'simple-icons';
 
 interface Props {
   skills: Skill[];
@@ -42,11 +22,35 @@ interface IconData {
   title: string;
 }
 
+const {
+  siHtml5,
+  siCss,
+  siJavascript,
+  siReact,
+  siNodedotjs,
+  siExpress,
+  siSwagger,
+  siPostgresql,
+  siMongodb,
+  siJest,
+  siGithubactions,
+  siGit,
+  siGithub,
+  siWordpress,
+  siWoo,
+  siPython,
+  siFirebase,
+  siKubernetes,
+  siGooglecloud,
+  siPytest,
+} = simpleIcons as unknown as Record<string, IconData>;
+
 // Mapping of skill names to simple-icons objects
 const SKILL_ICON_MAP: Record<string, IconData> = {
   'HTML': siHtml5,
   'CSS': siCss,
   'JavaScript': siJavascript,
+  'React': siReact,
   'Node.js': siNodedotjs,
   'Express': siExpress,
   'Swagger': siSwagger,
